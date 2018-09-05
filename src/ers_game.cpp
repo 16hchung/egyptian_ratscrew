@@ -13,13 +13,15 @@ EgyptianRatscrewGame::~EgyptianRatscrewGame() {
     for (Player *player : players) {
         delete player;
     }
+    Cnsl::print("A quick note: credit for playing card ASCII art goes to ejm98\n");
+    Cnsl::print("Link to art here: https://www.asciiart.eu/miscellaneous/playing-cards\n\n");
+    Cnsl::print("Thanks for playing!");
 }
 
 void EgyptianRatscrewGame::printIntro() {
     Cnsl::print("Welcome to Egyptian Ratscrew!\n");
     Cnsl::print("Want a rundown of how to play?\n");
-    // TODO ^^^
-    
+    // TODO: print instructions
 }
 
 void EgyptianRatscrewGame::initPlayers() {
