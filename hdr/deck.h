@@ -1,7 +1,7 @@
 #ifndef DECK_H
 #define DECK_H
-
-class Player;
+#include <vector>
+#include "player.h"
 
 class Deck {
 public:
@@ -12,9 +12,9 @@ public:
     void deal(std::vector<Player *> &players);
 
 private:
-    std::vector<Card> *cards;
+    std::vector<Card> cards;
 
-    static const int numCards = Card::numSuits * Card::numRanks;
+    static const int numCards = 52; //Card::numSuits * Card::numRanks;
 };
 
 

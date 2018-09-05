@@ -3,16 +3,15 @@
 #include <iostream>
 #include <ncurses.h>
 #include <panel.h>
-#include "egyptian_ratscrew_main.h"
+#include "ers_game.h"
+#include "main.h"
 
 int main(int argc, char const *argv[])
 {
-
-
     initWindow();
     char c = getch();
+    EgyptianRatscrewGame game;
     closeWindow();
-    std::cout << "done" << std::endl;
     return 0;
 }
 
