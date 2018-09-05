@@ -25,7 +25,11 @@ void ConsoleHandler::closeWindow() {
 }
 
 void ConsoleHandler::print(std::string str) {
-    waddstr(stdscr, str.c_str());
+    if (f_useNcurses) {
+        waddstr(stdscr, str.c_str());
+    } else {
+        std::cout << str;
+    }
 }
 
 std::string ConsoleHandler::getInput(std::string prompt) {
@@ -33,26 +37,26 @@ std::string ConsoleHandler::getInput(std::string prompt) {
     return getString();
 }
 
-/*
-Pulled from: https://stackoverflow.com/questions/26920261/read-a-string-with-ncurses-in-c
- */
+
 std::string ConsoleHandler::getString() {
     std::string input;
+    if (f_useNcurses) {
+        // Pulled from following link...
+        // https://stackoverflow.com/questions/26920261/read-a-string-with-ncurses-in-c
 
-    // let the terminal do the line editing
-    nocbreak();
-    echo();
-
-    // this reads from buffer after <ENTER>, not "raw" 
-    // so any backspacing etc. has already been taken care of
-    int ch = getch();
-    while ( ch != '\n' ) {
-        input.push_back( ch );
-        ch = getch();
+        // let the terminal do the line editing
+        nocbreak();
+        echo();
+        int ch = getch();
+        while ( ch != '\n' ) {
+            input.push_back( ch );
+            ch = getch();
+        }
+        // restore cbreak / echo settings 
+        noecho();
+        cbreak();
+    } else {
+        std::cin >> input;
     }
-
-    // restore cbreak / echo settings 
-    noecho();
-    cbreak();
     return input;
 }

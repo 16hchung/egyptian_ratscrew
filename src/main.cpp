@@ -6,9 +6,9 @@ int main(int argc, char const *argv[])
     // char c = getch();
     ConsoleHandler::initWindow();
     EgyptianRatscrewGame game;
-    game.printPlayers();
     
     ConsoleHandler::closeWindow();
+    game.printPlayers();
     return 0;
 }
 
