@@ -1,6 +1,5 @@
 #ifndef DECK_H
 #define DECK_H
-#include <vector>
 #include "player.h"
 
 class Deck {
@@ -14,7 +13,7 @@ public:
 private:
     std::vector<Card> cards;
 
-    static const int numCards = 52; //Card::numSuits * Card::numRanks;
+    static const int numCards = Card::numSuits * Card::numRanks;
 };
 
 

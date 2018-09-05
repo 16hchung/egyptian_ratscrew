@@ -1,7 +1,7 @@
 
 #ifndef CARD_H
 #define CARD_H
-#include <string>
+#include "common_hdrs.h"
 
 class Card {
 public:

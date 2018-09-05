@@ -1,6 +1,3 @@
-#include <cstdlib>
-#include <cstdio>
-#include <iostream>
 #include <ncurses.h>
 #include <panel.h>
 #include "ers_game.h"
