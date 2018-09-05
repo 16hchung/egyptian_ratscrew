@@ -1,70 +1,68 @@
-CXX = g++
-CXXFLAGS = -std=c++11 -lpanel -lncurses
-SRC = src
-HDR = hdr
-SOURCES = $(wildcard src/*.cpp)
-HEADERS = $(wildcard hdr/*.h)
+#Makefile adapted from template: https://stackoverflow.com/questions/5178125/how-to-place-object-files-in-separate-subdirectory
 
-# file containing headers for precompilation 
-PCH_SRC = precompile.h
-# project headers that are going to get precompiled (pch dependencies)
-PCH_HEADERS = header.h
-# pch output filename
-PCH_OUT = precompile.h.gch
+#Compiler and Linker
+CC          := g++
 
+#The Target Binary Program
+TARGET      := program
 
-main: $(SOURCES) $(HEADERS)
-	$(CXX) $(SOURCES) $(CXXFLAGS) -I$(HDR) -I$(SRC) -o main
+#The Directories, Source, Includes, Objects, Binary and Resources
+SRCDIR      := src
+INCDIR      := hdr
+BUILDDIR    := obj
+TARGETDIR   := bin
+SRCEXT      := cpp
+DEPEXT      := d
+OBJEXT      := o
 
-# $(PCH_OUT): $(PCH_SRC) $(PCH_HEADERS)
-#   $(CXX) $(CXXFLAGS) -o $@ $<
+#Flags, Libraries and Includes
+CFLAGS      := -std=c++11 -Wall -O3 -g
+LIB         := -lpanel -lncurses
+INC         := -I$(INCDIR)
+INCDEP      := -I$(INCDIR)
 
-# %.o: %.cpp $(PCH_OUT)
-#   $(CXX) $(CXXFLAGS) -include $(PCH_SRC) -c -o $@ $<
+#---------------------------------------------------------------------------------
+#DO NOT EDIT BELOW THIS LINE
+#---------------------------------------------------------------------------------
+SOURCES     := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 
-# # compiler
-# CXX = g++
+#Defauilt Make
+# all: resources $(TARGET)
+all: $(TARGET)
 
-# # directories
-# SRC = src
-# OBJ = obj
-# HDR = hdr
+#Remake
+remake: cleaner all
 
-# # flags
-# CXXFLAGS = -std=c++11 -Wall -g
-# LIB = -lpanel -lncurses
-# INC = -I$(HDR)
+#Make the Directories
+directories:
+	@mkdir -p $(TARGETDIR)
+	@mkdir -p $(BUILDDIR)
 
-# # file containing headers for precompilation 
-# PCH_SRC = precompile.h
-# # project headers that are going to get precompiled (pch dependencies)
-# PCH_HEADERS = header.h
-# # pch output filename
-# PCH_OUT = precompile.h.gch
+#Clean only Objecst
+clean:
+	@$(RM) -rf $(BUILDDIR)
 
+#Full Clean, Objects and Binaries
+cleaner: clean
+	@$(RM) -rf $(TARGETDIR)
 
-# # main: $(OBJ)/main.o $(OBJ)/card.o
-# # 	$(CXX) $(CXXFLAGS) $(INC) -o main $(OBJ)/main.o $(OBJ)/card.o
+#Pull in dependency info for *existing* .o files
+-include $(OBJECTS:.$(OBJEXT)=.$(DEPEXT))
 
-# # $(OBJ)/main.o: $(HDR)/main.h $(HDR)/card.h
-# # 	$(CXX) $(CXXFLAGS) $(INC) -c $(SRC)/main.cpp $(LIB) -o $@
+#Link
+$(TARGET): $(OBJECTS)
+	$(CC) -o $(TARGETDIR)/$(TARGET) $^ $(LIB)
 
-# # $(OBJ)/card.o: $(HDR)/card.h
-# # 	$(CXX) $(CXXFLAGS) -c $(SRC)/card.cpp $(LIB) -o $@
-# main: main.o player.o card.o
-# 	$(CXX) $(CXXFLAGS) $(INC) $(LIB) -o main main.o card.o
+#Compile
+$(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	@$(CC) $(CFLAGS) $(INCDEP) -MM $(SRCDIR)/$*.$(SRCEXT) > $(BUILDDIR)/$*.$(DEPEXT)
+	@cp -f $(BUILDDIR)/$*.$(DEPEXT) $(BUILDDIR)/$*.$(DEPEXT).tmp
+	@sed -e 's|.*:|$(BUILDDIR)/$*.$(OBJEXT):|' < $(BUILDDIR)/$*.$(DEPEXT).tmp > $(BUILDDIR)/$*.$(DEPEXT)
+	@sed -e 's/.*://' -e 's/\\$$//' < $(BUILDDIR)/$*.$(DEPEXT).tmp | fmt -1 | sed -e 's/^ *//' -e 's/$$/:/' >> $(BUILDDIR)/$*.$(DEPEXT)
+	@rm -f $(BUILDDIR)/$*.$(DEPEXT).tmp
 
-# main.o: $(HDR)/main.h $(HDR)/player.h $(HDR)/card.h
-# 	$(CXX) $(CXXFLAGS) $(INC) $(LIB) -c $(SRC)/main.cpp 
-
-# player.o: $(SRC)/player.cpp $(HDR)/card.h
-
-# card.o: $(SRC)/card.cpp
-
-
-
-# # $(PCH_OUT): $(PCH_SRC) $(PCH_HEADERS)
-# #   $(CXX) $(CXXFLAGS) -o $@ $<
-
-# # %.o: %.cpp $(PCH_OUT)
-# #   $(CXX) $(CXXFLAGS) -include $(PCH_SRC) -c -o $@ $<
+#Non-File Targets
+.PHONY: all remake clean cleaner resources
