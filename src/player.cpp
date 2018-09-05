@@ -21,9 +21,9 @@ int Player::get_score() {
 /* Helpful Debug Methods */
 
 void Player::print() {
-    std::cout << name << std::endl;
+    ConsoleHandler::print(name + "\n");
     for (Card *card : cards) {
-        std::cout << card->toString() << std::endl;
+        ConsoleHandler::print(card->toString() + "\n");
     }
-    std::cout << std::endl;
+    ConsoleHandler::print("\n");
 }
