@@ -4,7 +4,7 @@
 CC          := g++
 
 #The Target Binary Program
-TARGET      := program
+TARGET      := main
 
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := src
@@ -16,7 +16,7 @@ DEPEXT      := d
 OBJEXT      := o
 
 #Flags, Libraries and Includes
-CFLAGS      := -std=c++11 -Wall -O3 -g
+CFLAGS      := -std=c++1z -Wall -O3 -g
 LIB         := -lpanel -lncurses
 INC         := -I$(INCDIR)
 INCDEP      := -I$(INCDIR)
@@ -28,7 +28,6 @@ SOURCES     := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 
 #Defauilt Make
-# all: resources $(TARGET)
 all: $(TARGET)
 
 #Remake

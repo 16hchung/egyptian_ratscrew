@@ -17,7 +17,7 @@ void Deck::deal(std::vector<Player *> &players) {
     std::vector<int> cardIndices;
     cardIndices.reserve(Card::stdDeckCount);
     for (int i = 0; i < Card::stdDeckCount; i++) { cardIndices.emplace_back(i); }
-    std::random_shuffle(cardIndices.begin(), cardIndices.end());
+    std::shuffle(cardIndices.begin(), cardIndices.end(), std::default_random_engine(std::random_device()()));
 
     // go through generated indices and deal evenly to players
     int numPlayers = players.size();

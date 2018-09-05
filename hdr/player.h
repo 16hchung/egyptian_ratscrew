@@ -4,12 +4,19 @@
 
 class Player {
 public:
+    Player(std::string name);
+
+    const std::string name;
+
     void addCard(Card *card);
     void addCards(std::vector<Card *> &cardsToAdd);
     int get_score(); // just number of cards in possession
 
+    // helpful debug methods
+    void print();
+
 private:
-    std::queue<Card *> cards;
+    std::deque<Card *> cards;
 };
 
 #endif

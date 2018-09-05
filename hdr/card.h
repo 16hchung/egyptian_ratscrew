@@ -13,19 +13,19 @@ public:
     static const int numRanks = 13;
     static const int stdDeckCount = numSuits * numRanks;
 
-
     // constructor
     Card(Suit suit, int rank);
 
-    // getters
-    std::string get_suit();
-    int get_rank();
+    std::string toString();
 
-private:
+    // getters
+    std::string suitString();
+
     // basic properties
     const Suit suit;
     const int rank;
 
+private:
 };
 
 #endif

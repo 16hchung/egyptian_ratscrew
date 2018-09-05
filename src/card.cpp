@@ -1,10 +1,13 @@
 #include "card.h"
 
 // Constructor
-Card::Card(Suit suit, int rank) : suit(suit), rank(rank) {
+Card::Card(Suit suit, int rank) : suit(suit), rank(rank) {}
+
+std::string Card::toString() {
+    return suitString()  + ", " + std::to_string(rank);
 }
 
-std::string Card::get_suit() {
+std::string Card::suitString() {
     switch (suit) {
     case Hearts:
         return "Hearts";
@@ -15,8 +18,4 @@ std::string Card::get_suit() {
     case Clubs:
         return "Clubs";
     }
-}
-
-int Card::get_rank() {
-    return rank;
 }
