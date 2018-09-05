@@ -34,12 +34,21 @@ void EgyptianRatscrewGame::initPlayers() {
     players.push_back(player2);
 }
 
-bool EgyptianRatscrewGame::playerSlappedCenter(Player *player) {
+bool EgyptianRatscrewGame::playerSlappedCenter(int playerIdx) {
     return false;
 }
 
+void EgyptianRatscrewGame::cardDown() {
+    
+}
+
 bool EgyptianRatscrewGame::isGameDone() {
-    return true;
+    for (Player *player : players) {
+        if (player->getScore() >= Card::stdDeckCount) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void EgyptianRatscrewGame::printPlayers() {

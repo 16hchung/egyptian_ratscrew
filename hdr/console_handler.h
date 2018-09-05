@@ -4,7 +4,7 @@
 
 struct ConsoleHandler {
 public:
-    enum MoveType { CardDown, Player1Slap, Player2Slap, QuitGame, Misc };
+    enum MoveType { Player1Slap = 0, Player2Slap = 1, CardDown, QuitGame, Misc };
 
     static MoveType waitForMove();
 

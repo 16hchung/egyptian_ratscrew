@@ -5,23 +5,25 @@
 bool ConsoleHandler::f_useNcurses = false;
 
 ConsoleHandler::MoveType ConsoleHandler::waitForMove() {
-    char c = getch();
-    switch (c) {
-    case player1Key: case player1Key_l:
-        print("p1\n");
-        return Player1Slap;
-    case player2Key: case player2Key_l:
-        print("p2\n");
-        return Player2Slap;
-    case cardDownKey:
-        print("down\n");
-        return CardDown;
-    case quitKey: case quitKey_l:
-        print("quit\n");
-        return QuitGame;
-    default:
-        return Misc;
+    const int maxTries = 10;
+    for (int i = 0; i < maxTries; ++i) {
+        char c = getch();
+        switch (c) {
+        case player1Key: case player1Key_l:
+            return Player1Slap;
+        case player2Key: case player2Key_l:
+            return Player2Slap;
+        case cardDownKey:
+            return CardDown;
+        case quitKey: case quitKey_l:
+            return QuitGame;
+        default:
+            print("I don't recognize that key. \n");
+            print("Press D (player 1 slap), K (player 2 slap), Space (card down), or Q (quit).\n");
+        }
     }
+    print("That was 10 unrecognized key presses. Quitting game.\n");
+    return QuitGame;
 }
 
 void ConsoleHandler::initWindow() {
@@ -34,7 +36,7 @@ void ConsoleHandler::initWindow() {
 }
 
 void ConsoleHandler::closeWindow() {
-    print("Press any key to exit game.\n");
+    print("Press any key to exit.\n");
     getch();
     endwin();
     f_useNcurses = false;

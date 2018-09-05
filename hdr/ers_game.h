@@ -7,7 +7,8 @@ public:
     EgyptianRatscrewGame();
     ~EgyptianRatscrewGame();
 
-    bool playerSlappedCenter(Player *player);
+    bool playerSlappedCenter(int playerIdx);
+    void cardDown();
     bool isGameDone();
 
     // helpful debug methods

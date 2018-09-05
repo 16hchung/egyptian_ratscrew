@@ -14,7 +14,7 @@ void Player::addCards(std::vector<Card *> &cardsToAdd) {
     }
 }
 
-int Player::get_score() {
+int Player::getScore() {
     return cards.size();
 }
 
