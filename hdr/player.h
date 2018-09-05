@@ -4,10 +4,10 @@
 
 class Player {
 public:
-    
     void addCard(Card *card);
-    // void addCards(std::vector<Card *> &cards);
-    // int get_score(); // just number of cards in possession
+    void addCards(std::vector<Card *> &cardsToAdd);
+    int get_score(); // just number of cards in possession
+
 private:
     std::queue<Card *> cards;
 };

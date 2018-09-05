@@ -1,12 +1,5 @@
 #include "ers_game.h"
 
-
-EgyptianRatscrewGame::EgyptianRatscrewGame() {
-}
-
-EgyptianRatscrewGame::~EgyptianRatscrewGame() {
-}
-
 void EgyptianRatscrewGame::printIntro() {
 
 }

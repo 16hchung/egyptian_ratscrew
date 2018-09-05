@@ -5,10 +5,11 @@
 
 int main(int argc, char const *argv[])
 {
-    initWindow();
-    char c = getch();
-    EgyptianRatscrewGame game;
-    closeWindow();
+    // initWindow();
+    // char c = getch();
+    // EgyptianRatscrewGame game;
+    // closeWindow();
+    
     return 0;
 }
 

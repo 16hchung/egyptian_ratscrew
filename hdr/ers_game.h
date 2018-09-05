@@ -4,14 +4,9 @@
 
 class EgyptianRatscrewGame {
 public:
-    EgyptianRatscrewGame();
-    ~EgyptianRatscrewGame();
-
     void printIntro();
     bool playerSlappedCenter(Player *player);
     bool isGameDone();
-
-    int test = 0;
 
 private:
     Deck deck;

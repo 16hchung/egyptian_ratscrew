@@ -11,6 +11,8 @@ public:
     // helpful constants
     static const int numSuits = 4;
     static const int numRanks = 13;
+    static const int stdDeckCount = numSuits * numRanks;
+
 
     // constructor
     Card(Suit suit, int rank);
