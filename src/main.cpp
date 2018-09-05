@@ -5,7 +5,6 @@ using cnsl = ConsoleHandler;
 
 int main(int argc, char const *argv[])
 {
-    // char c = getch();
     cnsl::initWindow();
     playGame();
     cnsl::closeWindow();

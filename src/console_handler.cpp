@@ -5,7 +5,23 @@
 bool ConsoleHandler::f_useNcurses = false;
 
 ConsoleHandler::MoveType ConsoleHandler::waitForMove() {
-    return ConsoleHandler::CardDown;
+    char c = getch();
+    switch (c) {
+    case player1Key: case player1Key_l:
+        print("p1\n");
+        return Player1Slap;
+    case player2Key: case player2Key_l:
+        print("p2\n");
+        return Player2Slap;
+    case cardDownKey:
+        print("down\n");
+        return CardDown;
+    case quitKey: case quitKey_l:
+        print("quit\n");
+        return QuitGame;
+    default:
+        return Misc;
+    }
 }
 
 void ConsoleHandler::initWindow() {

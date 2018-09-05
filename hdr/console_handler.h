@@ -4,7 +4,7 @@
 
 struct ConsoleHandler {
 public:
-    enum MoveType { CardDown, Player1Slap, Player2Slap, QuitGame };
+    enum MoveType { CardDown, Player1Slap, Player2Slap, QuitGame, Misc };
 
     static MoveType waitForMove();
 
@@ -22,9 +22,13 @@ private:
     static bool f_useNcurses;
 
     // Constants
-    static const char player1Key = 'D';
-    static const char player2Key = 'K';
-    static const char cardDownKey = ' ';
+    static const char player1Key   = 'D';
+    static const char player1Key_l = 'd';
+    static const char player2Key   = 'K';
+    static const char player2Key_l = 'k';
+    static const char quitKey      = 'Q';
+    static const char quitKey_l    = 'q';
+    static const char cardDownKey  = ' ';
 };
 
 #endif
