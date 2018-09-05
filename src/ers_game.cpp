@@ -39,7 +39,7 @@ bool EgyptianRatscrewGame::playerSlappedCenter(Player *player) {
 }
 
 bool EgyptianRatscrewGame::isGameDone() {
-    return false;
+    return true;
 }
 
 void EgyptianRatscrewGame::printPlayers() {

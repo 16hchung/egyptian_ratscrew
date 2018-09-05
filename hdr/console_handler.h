@@ -4,7 +4,7 @@
 
 struct ConsoleHandler {
 public:
-    enum MoveType { CardDown, Slap };
+    enum MoveType { CardDown, Player1Slap, Player2Slap, QuitGame };
 
     static MoveType waitForMove();
 
@@ -17,8 +17,14 @@ public:
 private:
     static std::string getString();
 
+    // flag to keep track of whether or not ncurses window is open 
+    // (different printing/input method depending on whether window is open or not)
     static bool f_useNcurses;
 
+    // Constants
+    static const char player1Key = 'D';
+    static const char player2Key = 'K';
+    static const char cardDownKey = ' ';
 };
 
 #endif
