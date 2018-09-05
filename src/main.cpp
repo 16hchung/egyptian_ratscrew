@@ -1,5 +1,4 @@
-#include <ncurses.h>
-#include <panel.h>
+#include "console_handler.h"
 #include "ers_game.h"
 #include "main.h"
 
@@ -19,15 +18,6 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-void initWindow() {
-    initscr();
-    cbreak();
-    noecho();
-}
-
-void closeWindow() {
-    endwin();
-}
 
 void playGame() {
 
