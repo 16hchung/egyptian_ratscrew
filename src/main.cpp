@@ -1,33 +1,38 @@
 #include "ers_game.h"
 #include "main.h"
+#include <ncurses.h>
 
-using cnsl = ConsoleHandler;
+using Cnsl = ConsoleHandler;
 
 int main(int argc, char const *argv[])
 {
-    cnsl::initWindow();
+    Cnsl::initWindow();
+    // Cnsl::MoveType move = Cnsl::waitForMove();
+    // char c = getch();
     playGame();
-    cnsl::closeWindow();
+    Cnsl::closeWindow();
     return 0;
 }
 
 
 void playGame() {
     EgyptianRatscrewGame game;
-    cnsl::MoveType move = cnsl::waitForMove();
-    while (!game.isGameDone() && move != cnsl::QuitGame) {
+    Cnsl::MoveType move = Cnsl::waitForMove();
+    while (!game.isGameDone() && move != Cnsl::QuitGame) {
         bool f_shouldQuit = false;
         switch (move) {
-        case cnsl::Player1Slap: case cnsl::Player2Slap:
-            game.playerSlappedCenter((int) move);
-        case cnsl::CardDown:
+        // case Cnsl::Player1Slap: case Cnsl::Player2Slap:
+        //     game.playerSlappedCenter((int) move);
+            break;
+        case Cnsl::CardDown:
             game.cardDown();
-        case cnsl::QuitGame:
-            f_shouldQuit = true;
+            break;
+        case Cnsl::QuitGame:
         default:
+            f_shouldQuit = true;
             break;
         }
         if (f_shouldQuit) { break; }
-        move = cnsl::waitForMove();
+        move = Cnsl::waitForMove();
    }
 }

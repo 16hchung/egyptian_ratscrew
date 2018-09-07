@@ -8,10 +8,12 @@
 #include <queue>
 #include <algorithm>
 #include <iostream>
+#include <stack>
 
 // c libs
 #include <cstdlib>
 #include <cstdio>
 #include <cctype>
+#include <cassert>
 
 #endif

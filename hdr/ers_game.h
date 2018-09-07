@@ -17,10 +17,16 @@ public:
 private:
     void printIntro();
     void initPlayers();
+    int faceCardCountdownForRank(Card::Rank rank);
+    void setToNextPlayer();
 
     Deck deck;
-    std::vector<Card *> centerPile;
+    std::stack<Card *> centerPile;
     std::vector<Player *> players;
+
+    int currentPlayerIdx = 0;
+    int faceCardCountdown = 0;
+
 };
 
 #endif

@@ -11,6 +11,8 @@ public:
 
     void addCard(Card *card);
     void addCards(std::vector<Card *> &cardsToAdd);
+    Card *getCard();
+
     int getScore(); // just number of cards in possession
 
     // helpful debug methods

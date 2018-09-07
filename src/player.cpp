@@ -14,6 +14,13 @@ void Player::addCards(std::vector<Card *> &cardsToAdd) {
     }
 }
 
+Card * Player::getCard() {
+    if (cards.empty()) { return nullptr; }
+    Card *card = cards.back();
+    cards.pop_back();
+    return card;
+}
+
 int Player::getScore() {
     return cards.size();
 }

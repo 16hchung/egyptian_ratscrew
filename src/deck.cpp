@@ -4,7 +4,7 @@ Deck::Deck() {
     cards.reserve(Card::stdDeckCount); // pre-allocate memory for cards
 
     // iterate through possible ranks and suits and generate deck
-    for (int rank = 1; rank <= Card::numRanks; ++rank) {
+    for (Card::Rank rank : Card::possibleRanks) {
         for (int suitInt = 0; suitInt < Card::numSuits; ++suitInt) {
             Card::Suit suit = static_cast<Card::Suit>(suitInt);
             cards.emplace_back(suit, rank);
