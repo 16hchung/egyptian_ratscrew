@@ -6,7 +6,7 @@ class Deck {
 public:
     // constructor/destructor
     Deck();
-
+    static const int numCards = Card::numRanks * Card::numSuits;
     void deal(std::vector<Player *> &players);
 
 private:
