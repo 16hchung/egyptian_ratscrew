@@ -1,11 +1,10 @@
 #ifndef ERS_GAME_H
 #define ERS_GAME_H
 #include "deck.h"
+#include "center_pile.h"
 
 class EgyptianRatscrewGame {
 public:
-    enum SlapType { Invalid, Double, Sandwich, TopBottom, Marriage, Rainbow, Affair, Divorce };
-
     EgyptianRatscrewGame();
     ~EgyptianRatscrewGame();
 
@@ -13,32 +12,21 @@ public:
     void cardDown();
     bool isGameDone();
 
-    // helpful debug methods
+    // helpful debug methods, TODO: get rid of this
     void printPlayers();
 
 private:
     void printIntro();
     void initPlayers();
-    int faceCardCountdownForRank(Card::Rank rank);
-    void setToNextPlayer();
+    void nextPlayerTurn();
     Player *getLastPlayer();
-    void addToCenterPile(Card *card);
-    bool cardPairHasRanks(Card *card1, Card *card2, Card::Rank rank1, Card::Rank rank2);
-    void resetCenterPile();
-
-    SlapType currentSlapType();
 
     Deck deck;
-    std::stack<Card *> centerPile;
+    CenterCardPile centerPile;
     std::vector<Player *> players;
 
     int currentPlayerIdx = 0;
-    int faceCardCountdown = 0;
 
-    // pointers to lower in center pile stack, since stack only lets us see the top card
-    Card *bottom = nullptr;
-    Card *secondToTop = nullptr;
-    Card *thirdToTop = nullptr;
 };
 
 #endif
