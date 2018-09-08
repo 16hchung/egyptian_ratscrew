@@ -52,14 +52,17 @@ void EgyptianRatscrewGame::cardDown() {
     Card *nextCardDown = currentPlayer->getCard();
     // since there's only room on the keyboard for 2 players,
     // game should be over if nextCardDown is null (ie this player ran out of cards)
-    if (!nextCardDown) { return; } 
-    Cnsl::print("card: " + nextCardDown->toString() + "\n\n");
+    if (!nextCardDown) { 
+        Cnsl::print("no card down\n");
+        return;
+    } 
     addToCenterPile(nextCardDown);
 
     /* Handle face card case... */
     int newCountdown = faceCardCountdownForRank(nextCardDown->rank);
+
     // if we have a new face card, or if we're not currently in the middle of a countdown, reset
-    if (newCountdown > 0 && faceCardCountdown <= 0) {
+    if (newCountdown > 0 || faceCardCountdown <= 0) {
         faceCardCountdown = newCountdown;
         setToNextPlayer(); // player only gets switched if no former persistent countdown
         // return;
@@ -67,7 +70,10 @@ void EgyptianRatscrewGame::cardDown() {
 
     // if we are in the middle of a countdown and there is no new face card to reset it
     faceCardCountdown--;
-    if (faceCardCountdown > 0) { return; }
+    if (faceCardCountdown > 0) { 
+        Cnsl::print("countdown not done\n");
+        return; 
+    }
     // if countdown is over and pile is not slappable, then last player gets center pile,
     // otherwise leave it alone
     SlapType slap = currentSlapType();
@@ -82,6 +88,7 @@ void EgyptianRatscrewGame::cardDown() {
     Cnsl::print(players[0]->name + ": " + std::to_string(players[0]->getScore()) + "\n");
     Cnsl::print(players[1]->name + ": " + std::to_string(players[1]->getScore()) + "\n");
     Cnsl::print("countdown: " + std::to_string(faceCardCountdown)+ "\n");
+    Cnsl::print("card: " + nextCardDown->toString() + "\n\n");
 
 }
 
@@ -168,7 +175,7 @@ Player *EgyptianRatscrewGame::getLastPlayer() {
 bool EgyptianRatscrewGame::isGameDone() {
     for (Player *player : players) {
         assert(player);
-        if (player->getScore() >= Card::stdDeckCount) {
+        if (player->getScore() <= 0) {
             return true;
         }
     }

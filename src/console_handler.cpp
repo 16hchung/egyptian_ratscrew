@@ -60,6 +60,7 @@ std::string ConsoleHandler::getInput(size_t len, std::string prompt) {
 
 std::string ConsoleHandler::getString(size_t len) {
     if (f_useNcurses) {
+        echo();
         char cInput[len];
         int status = getnstr(cInput, len);
         if (status != OK) {
@@ -67,7 +68,7 @@ std::string ConsoleHandler::getString(size_t len) {
             throw std::runtime_error("Something went wrong. Please restart the terminal and run bin/main again.");
         }
         std::string input(cInput);
-        print(input);
+        noecho();
         return input;
     } else {
         std::string input;
