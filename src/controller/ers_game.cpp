@@ -36,18 +36,20 @@ void EgyptianRatscrewGame::initPlayers() {
 }
 
 bool EgyptianRatscrewGame::playerSlappedCenter(int playerIdx) {
-    bool wrongSlap = false;
-    if (!wrongSlap) {
-    } 
-    // determine if its a match
-    // handle if it is
-    // handle if it isnt
+    // determine if pile is slappable
+    CenterCardPile::SlapType slap = centerPile.currentSlapType();
+    switch (slap) {
+    case CenterCardPile::Invalid:
+        break;
+    default:
+        break;
+    }
+
     return false;
 }
 
 void EgyptianRatscrewGame::cardDown() {
-    Player *currentPlayer = players[currentPlayerIdx];
-    assert(currentPlayer);
+    Player *currentPlayer = getCurrentPlayer();
     // dequeue card from current player
     Card *nextCardDown = currentPlayer->getCard();
     // since there's only room on the keyboard for 2 players,
@@ -86,6 +88,12 @@ void EgyptianRatscrewGame::nextPlayerTurn() {
     if (currentPlayerIdx >= players.size()) {
         currentPlayerIdx = 0;
     }
+}
+
+Player *EgyptianRatscrewGame::getCurrentPlayer() {
+    Player *currentPlayer = players[currentPlayerIdx];
+    assert(currentPlayer);
+    return currentPlayer;
 }
 
 Player *EgyptianRatscrewGame::getLastPlayer() {

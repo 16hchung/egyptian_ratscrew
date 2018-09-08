@@ -31,9 +31,15 @@ void CenterCardPile::addCard(Card *card, bool &out_startedNewCountdown, // outpu
     }
 }
 
+void CenterCardPile::addCard(Card * card) {
+    bool dummy_startedNewCountdown, dummy_wasInCountdown, dummy_finishedCountdown;
+    addCard(card, dummy_startedNewCountdown, dummy_wasInCountdown, dummy_finishedCountdown);
+}
+
 void CenterCardPile::giveCardsToPlayer(Player *player) {
     assert(player);
     player->addCards(cards);
+    player->addCards(burnPile); // burn pile get's put below center pile in real-life game play
     reset();
 }
 

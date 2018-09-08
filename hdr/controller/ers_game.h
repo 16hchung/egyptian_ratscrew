@@ -20,6 +20,7 @@ private:
     void initPlayers();
     void nextPlayerTurn();
     Player *getLastPlayer();
+    Player *getCurrentPlayer();
 
     Deck deck;
     CenterCardPile centerPile;

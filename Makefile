@@ -9,8 +9,11 @@ TARGET      := main
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := src
 INCDIR      := hdr
+INCCONTR    := hdr/controller
+INCMODEL    := hdr/model
+INCVIEW     := hdr/view
 BUILDDIR    := obj
-TARGETDIR   := bin
+# TARGETDIR   := bin
 SRCEXT      := cpp
 DEPEXT      := d
 OBJEXT      := o
@@ -18,8 +21,8 @@ OBJEXT      := o
 #Flags, Libraries and Includes
 CFLAGS      := -std=c++1z -Wall -g #-O3
 LIB         := -lpanel -lncurses
-INC         := -I$(INCDIR)
-INCDEP      := -I$(INCDIR)
+INC         := -I$(INCDIR) -I$(INCCONTR) -I$(INCMODEL) -I$(INCVIEW)
+INCDEP      := -I$(INCDIR) -I$(INCCONTR) -I$(INCMODEL) -I$(INCVIEW)
 
 #---------------------------------------------------------------------------------
 #DO NOT EDIT BELOW THIS LINE
@@ -35,7 +38,6 @@ remake: cleaner all
 
 #Make the Directories
 directories:
-	@mkdir -p $(TARGETDIR)
 	@mkdir -p $(BUILDDIR)
 
 #Clean only Objecst
@@ -44,14 +46,14 @@ clean:
 
 #Full Clean, Objects and Binaries
 cleaner: clean
-	@$(RM) -rf $(TARGETDIR)
+	@$(RM) -rf $(TARGET)
 
 #Pull in dependency info for *existing* .o files
 -include $(OBJECTS:.$(OBJEXT)=.$(DEPEXT))
 
 #Link
 $(TARGET): $(OBJECTS)
-	$(CC) -o $(TARGETDIR)/$(TARGET) $^ $(LIB)
+	$(CC) -o $(TARGET) $^ $(LIB)
 
 #Compile
 $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
