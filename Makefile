@@ -16,7 +16,7 @@ DEPEXT      := d
 OBJEXT      := o
 
 #Flags, Libraries and Includes
-CFLAGS      := -std=c++11 -Wall -g #-O3
+CFLAGS      := -std=c++1z -Wall -g #-O3
 LIB         := -lpanel -lncurses
 INC         := -I$(INCDIR)
 INCDEP      := -I$(INCDIR)
