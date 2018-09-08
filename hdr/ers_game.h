@@ -4,6 +4,8 @@
 
 class EgyptianRatscrewGame {
 public:
+    enum SlapType { Invalid, Double, Sandwich, TopBottom, Marriage, Rainbow, Affair, Divorce };
+
     EgyptianRatscrewGame();
     ~EgyptianRatscrewGame();
 
@@ -19,6 +21,12 @@ private:
     void initPlayers();
     int faceCardCountdownForRank(Card::Rank rank);
     void setToNextPlayer();
+    Player *getLastPlayer();
+    void addToCenterPile(Card *card);
+    bool cardPairHasRanks(Card *card1, Card *card2, Card::Rank rank1, Card::Rank rank2);
+    void resetCenterPile();
+
+    SlapType currentSlapType();
 
     Deck deck;
     std::stack<Card *> centerPile;
@@ -27,6 +35,10 @@ private:
     int currentPlayerIdx = 0;
     int faceCardCountdown = 0;
 
+    // pointers to lower in center pile stack, since stack only lets us see the top card
+    Card *bottom = nullptr;
+    Card *secondToTop = nullptr;
+    Card *thirdToTop = nullptr;
 };
 
 #endif

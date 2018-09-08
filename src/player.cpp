@@ -6,11 +6,12 @@ void Player::addCard(Card *card) {
     cards.push_front(card);
 }
 
-void Player::addCards(std::vector<Card *> &cardsToAdd) {
-    // iterate through cards and add to member queue
-    // stack of cards gets added to *bottom* of player's hand, so enqueue in reverse order 
-    for (int i = cardsToAdd.size() - 1; i > 0; ++i) {
-        cards.push_front(cardsToAdd[i]);
+void Player::addCards(std::stack<Card *> &cardsToAdd) {
+    // stack of cards gets added to *bottom* of player's hand, so enqueue in order that cards
+    // get popped off the stack 
+    while (!cardsToAdd.empty()) {
+        cards.push_front(cardsToAdd.top());
+        cardsToAdd.pop();
     }
 }
 
@@ -30,6 +31,7 @@ int Player::getScore() {
 void Player::print() {
     ConsoleHandler::print(name + "\n");
     for (Card *card : cards) {
+        assert(card);
         ConsoleHandler::print(card->toString() + "\n");
     }
     ConsoleHandler::print("\n");

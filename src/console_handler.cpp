@@ -32,12 +32,14 @@ void ConsoleHandler::initWindow() {
     cbreak();
     noecho();
     clear();
-    scrollok(stdscr, true);
+    scrollok(stdscr, TRUE);
 }
 
-void ConsoleHandler::closeWindow() {
-    print("Press any key to exit.\n");
-    getch();
+void ConsoleHandler::closeWindow(bool prompt) {
+    if (prompt) {
+        print("Press any key to exit.\n");
+        getch();
+    }
     endwin();
     f_useNcurses = false;
 }
@@ -50,31 +52,26 @@ void ConsoleHandler::print(std::string str) {
     }
 }
 
-std::string ConsoleHandler::getInput(std::string prompt) {
+std::string ConsoleHandler::getInput(size_t len, std::string prompt) {
     print(prompt);
-    return getString();
+    return getString(len);
 }
 
 
-std::string ConsoleHandler::getString() {
-    std::string input;
+std::string ConsoleHandler::getString(size_t len) {
     if (f_useNcurses) {
-        // Pulled from following link...
-        // https://stackoverflow.com/questions/26920261/read-a-string-with-ncurses-in-c
-
-        // let the terminal do the line editing
-        nocbreak();
-        echo();
-        int ch = getch();
-        while ( ch != '\n' ) {
-            input.push_back( ch );
-            ch = getch();
+        char cInput[len];
+        int status = getnstr(cInput, len);
+        if (status != OK) {
+            closeWindow(false);
+            throw std::runtime_error("Something went wrong. Please restart the terminal and run bin/main again.");
         }
-        // restore cbreak / echo settings 
-        noecho();
-        cbreak();
+        std::string input(cInput);
+        print(input);
+        return input;
     } else {
+        std::string input;
         std::cin >> input;
+        return input;
     }
-    return input;
 }

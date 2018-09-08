@@ -27,6 +27,7 @@ void Deck::deal(std::vector<Player *> &players) {
     {
         int cardIdx = cardIndices[cardIdxIdx];
         // pass pointer of card to player
+        assert(players[playerIdx]);
         players[playerIdx]->addCard(&(cards[cardIdx]));
     }
 }

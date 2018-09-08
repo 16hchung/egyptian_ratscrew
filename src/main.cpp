@@ -21,9 +21,6 @@ void playGame() {
     while (!game.isGameDone() && move != Cnsl::QuitGame) {
         bool f_shouldQuit = false;
         switch (move) {
-        // case Cnsl::Player1Slap: case Cnsl::Player2Slap:
-        //     game.playerSlappedCenter((int) move);
-            break;
         case Cnsl::CardDown:
             game.cardDown();
             break;

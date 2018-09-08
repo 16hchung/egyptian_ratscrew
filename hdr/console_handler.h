@@ -9,13 +9,13 @@ public:
     static MoveType waitForMove();
 
     static void print(std::string str);
-    static std::string getInput(std::string prompt = "");
+    static std::string getInput(size_t len, std::string prompt = "");
 
     static void initWindow();
-    static void closeWindow();
+    static void closeWindow(bool prompt = true);
 
 private:
-    static std::string getString();
+    static std::string getString(size_t len);
 
     // flag to keep track of whether or not ncurses window is open 
     // (different printing/input method depending on whether window is open or not)
