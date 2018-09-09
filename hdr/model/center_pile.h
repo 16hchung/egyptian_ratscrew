@@ -11,6 +11,7 @@ public:
     void addCard(Card *card, bool &out_startedNewCountdown,
                              bool &out_wasInCountdown,
                              bool &out_countDownFinished);
+    void burnCard(Card *card);
     void giveCardsToPlayer(Player *player);
     SlapType currentSlapType();
 

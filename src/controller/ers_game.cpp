@@ -35,17 +35,22 @@ void EgyptianRatscrewGame::initPlayers() {
     players.push_back(player2);
 }
 
-bool EgyptianRatscrewGame::playerSlappedCenter(int playerIdx) {
+void EgyptianRatscrewGame::playerSlappedCenter(int playerIdx) {
+    assert(0 <= playerIdx && playerIdx < players.size());
+    Player *player = players[playerIdx];
+    assert(player);
     // determine if pile is slappable
     CenterCardPile::SlapType slap = centerPile.currentSlapType();
-    switch (slap) {
-    case CenterCardPile::Invalid:
-        break;
-    default:
-        break;
+    if (slap == CenterCardPile::Invalid) {
+        Cnsl::print("Invalid slap: " + player->name + "\n");
+        Card *card = player->getCard();
+        centerPile.burnCard(card);
+    } else {
+        Cnsl::print("Valid slap: " + player->name + "\n");
+        centerPile.giveCardsToPlayer(player);
+        currentPlayerIdx = playerIdx;
     }
-
-    return false;
+    return;
 }
 
 void EgyptianRatscrewGame::cardDown() {
@@ -96,15 +101,19 @@ Player *EgyptianRatscrewGame::getCurrentPlayer() {
     return currentPlayer;
 }
 
-Player *EgyptianRatscrewGame::getLastPlayer() {
-    int playerIdx = (currentPlayerIdx <= 0) ? players.size() - 1 : currentPlayerIdx - 1;
-    return players[playerIdx];
+Player *EgyptianRatscrewGame::getLastPlayer(int playerIdx) {
+    if (playerIdx < 0) { playerIdx = currentPlayerIdx; }
+    int lastPlayerIdx = (playerIdx <= 0) ? players.size() - 1 : playerIdx - 1;
+    return players[lastPlayerIdx];
 }
 
 bool EgyptianRatscrewGame::isGameDone() {
-    for (Player *player : players) {
+    for (int playerIdx = 0; playerIdx < players.size(); playerIdx++) {     
+        Player *player = players[playerIdx];   
         assert(player);
         if (player->getScore() <= 0) {
+            Player *winner = getLastPlayer(playerIdx);
+            Cnsl::print(winner->name + " won! Great Job!");
             return true;
         }
     }

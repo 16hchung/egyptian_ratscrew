@@ -1,5 +1,3 @@
-#include <ncurses.h>
-#include <panel.h>
 #include "console_handler.h"
 
 bool ConsoleHandler::f_useNcurses = false;

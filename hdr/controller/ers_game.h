@@ -8,7 +8,7 @@ public:
     EgyptianRatscrewGame();
     ~EgyptianRatscrewGame();
 
-    bool playerSlappedCenter(int playerIdx);
+    void playerSlappedCenter(int playerIdx);
     void cardDown();
     bool isGameDone();
 
@@ -19,7 +19,7 @@ private:
     void printIntro();
     void initPlayers();
     void nextPlayerTurn();
-    Player *getLastPlayer();
+    Player *getLastPlayer(int playerIdx = -1);
     Player *getCurrentPlayer();
 
     Deck deck;

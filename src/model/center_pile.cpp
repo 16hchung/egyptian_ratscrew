@@ -33,7 +33,13 @@ void CenterCardPile::addCard(Card *card, bool &out_startedNewCountdown, // outpu
 
 void CenterCardPile::addCard(Card * card) {
     bool dummy_startedNewCountdown, dummy_wasInCountdown, dummy_finishedCountdown;
+    if (!card) { return; }
     addCard(card, dummy_startedNewCountdown, dummy_wasInCountdown, dummy_finishedCountdown);
+}
+
+void CenterCardPile::burnCard(Card *card) {
+    if (!card) { return; }
+    burnPile.push(card);
 }
 
 void CenterCardPile::giveCardsToPlayer(Player *player) {
