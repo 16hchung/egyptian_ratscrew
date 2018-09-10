@@ -20,7 +20,7 @@ OBJEXT      := o
 
 #Flags, Libraries and Includes
 CFLAGS      := -std=c++1z -Wall -g #-O3
-LIB         := -lpanel -lncurses
+LIB         := -lncurses
 INC         := -I$(INCDIR) -I$(INCCONTR) -I$(INCMODEL) -I$(INCVIEW)
 INCDEP      := -I$(INCDIR) -I$(INCCONTR) -I$(INCMODEL) -I$(INCVIEW)
 

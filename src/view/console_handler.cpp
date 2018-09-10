@@ -1,6 +1,8 @@
 #include "console_handler.h"
 
 bool ConsoleHandler::f_useNcurses = false;
+std::vector<WINDOW *> ConsoleHandler::windows;
+std::set<ConsoleHandler::WindowPosition> ConsoleHandler::occupiedPositions;
 
 ConsoleHandler::MoveType ConsoleHandler::waitForMove() {
     const int maxTries = 10;
@@ -33,6 +35,15 @@ void ConsoleHandler::initWindow() {
     scrollok(stdscr, TRUE);
 }
 
+int ConsoleHandler::newWindow(ConsoleHandler::WindowPosition position) {
+    if (isPositionOccupied(position)) {
+        throw std::runtime_error("Trying to create window in occupied position.");
+    }
+    setOccupiedPosition(position, true);
+    int indexID = windows.size();
+    return indexID;
+}
+
 void ConsoleHandler::closeWindow(bool prompt) {
     if (prompt) {
         print("Press any key to exit.\n");
@@ -42,9 +53,13 @@ void ConsoleHandler::closeWindow(bool prompt) {
     f_useNcurses = false;
 }
 
-void ConsoleHandler::print(std::string str) {
+void ConsoleHandler::print(std::string str, int windowIdx) {
+    if (windowIdx >= (int) windows.size()) {
+        throw std::runtime_error("Invalid ID passed to ConsoleHandler::print");
+    }
+    WINDOW *window = (windowIdx < 0) ? stdscr : windows[windowIdx];
     if (f_useNcurses) {
-        waddstr(stdscr, str.c_str());
+        waddstr(window, str.c_str());
     } else {
         std::cout << str;
     }
@@ -55,6 +70,22 @@ std::string ConsoleHandler::getInput(size_t len, std::string prompt) {
     return getString(len);
 }
 
+void ConsoleHandler::coordsForPosition(ConsoleHandler::WindowPosition position, int &nlines, int &ncols, int &x, int &y) {
+
+}
+
+bool ConsoleHandler::isPositionOccupied(ConsoleHandler::WindowPosition position) {
+    auto existingPos = occupiedPositions.find(position);
+    return existingPos != occupiedPositions.end();
+}
+
+void ConsoleHandler::setOccupiedPosition(ConsoleHandler::WindowPosition position, bool isOccupied) {
+    if (isOccupied) {
+        occupiedPositions.insert(position);
+    } else {
+        occupiedPositions.erase(position);
+    }
+}
 
 std::string ConsoleHandler::getString(size_t len) {
     if (f_useNcurses) {
