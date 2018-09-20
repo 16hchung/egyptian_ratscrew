@@ -7,7 +7,14 @@ using Cnsl = ConsoleHandler;
 int main(int argc, char const *argv[])
 {
     Cnsl::initWindow();
-    playGame();
+    // MainLeft, MainRight, Bottom, SmallLeft, SmallRight
+    Cnsl::newWindow(Cnsl::MainLeft);
+    Cnsl::newWindow(Cnsl::MainRight);
+    Cnsl::newWindow(Cnsl::Bottom);
+    Cnsl::newWindow(Cnsl::SmallLeft);
+    Cnsl::newWindow(Cnsl::SmallRight);
+
+    // playGame();
     Cnsl::closeWindow();
     return 0;
 }

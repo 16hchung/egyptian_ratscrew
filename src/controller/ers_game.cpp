@@ -6,6 +6,7 @@ using Cnsl = ConsoleHandler;
 EgyptianRatscrewGame::EgyptianRatscrewGame() {
     printIntro();
     initPlayers();
+    initPanels();
     deck.deal(players);
 }
 
@@ -33,6 +34,10 @@ void EgyptianRatscrewGame::initPlayers() {
     Player *player2 = new Player(player2Name);
     players.push_back(player1);
     players.push_back(player2);
+}
+
+void EgyptianRatscrewGame::initPanels() {
+    
 }
 
 void EgyptianRatscrewGame::playerSlappedCenter(int playerIdx) {

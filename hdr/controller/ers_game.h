@@ -18,6 +18,7 @@ public:
 private:
     void printIntro();
     void initPlayers();
+    void initPanels();
     void nextPlayerTurn();
     Player *getLastPlayer(int playerIdx = -1);
     Player *getCurrentPlayer();

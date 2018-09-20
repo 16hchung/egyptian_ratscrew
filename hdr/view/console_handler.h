@@ -9,7 +9,7 @@
 struct ConsoleHandler {
 public:
     enum MoveType { Player1Slap = 0, Player2Slap = 1, CardDown, QuitGame, Misc };
-    enum WindowPosition { CenterLeft, CenterRight, Bottom, Left, Right };
+    enum WindowPosition { MainLeft, MainRight, Bottom, SmallLeft, SmallRight };
     
     /* Keyboard related... */
     static MoveType waitForMove();
@@ -31,6 +31,12 @@ private:
     static bool f_useNcurses;
 
     /* Window helpers... */
+    static int totalNLines;
+    static int totalNCols;
+
+    static int getTotalNLines(); // lazy initialize
+    static int getTotalNCols();
+
     static void coordsForPosition(WindowPosition position, int &nlines, int &ncols, int &x, int &y);
     static bool isPositionOccupied(WindowPosition position);
     static void setOccupiedPosition(WindowPosition position, bool isOccupied);
