@@ -12,7 +12,7 @@ namespace CardStringTemplates {
         "     |   \\ /   | \n"
         "     |    .    | \n"
         "     |         | \n"
-        "     |______ XX| \n";
+        "     |_______XX| \n";
 
 
     static const std::string clubsTemplate = 
@@ -23,7 +23,7 @@ namespace CardStringTemplates {
         "     |  (_'_)  | \n"
         "     |    |    | \n"
         "     |         | \n"
-        "     |______ XX| \n";
+        "     |_______XX| \n";
 
     static const std::string spadesTemplate = 
         "      _________  \n"

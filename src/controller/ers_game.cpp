@@ -3,6 +3,7 @@
 #include "main_center_pile_view.h"
 #include "burn_center_pile_view.h"
 #include "player_view.h"
+#include "instructions_view.h"
 
 using Cnsl = ConsoleHandler;
 
@@ -21,6 +22,7 @@ EgyptianRatscrewGame::~EgyptianRatscrewGame() {
     delete burnPileView;
     delete player1View;
     delete player2View;
+    delete instructionsView;
     Cnsl::print("A quick note: credit for playing card ASCII art goes to ejm98\n");
     Cnsl::print("Link to art here: https://www.asciiart.eu/miscellaneous/playing-cards\n\n");
     Cnsl::print("Thanks for playing!\n");
@@ -47,8 +49,9 @@ void EgyptianRatscrewGame::initViews() {
     assert(players.size() == 2);
     player1View = new PlayerView(Cnsl::SmallLeft,  players[0]->name, Cnsl::player1Key, players[0]->getScore());
     player2View = new PlayerView(Cnsl::SmallRight, players[1]->name, Cnsl::player2Key, players[1]->getScore());
-    centerPileView = new MainCenterPileView();
-    burnPileView   = new BurnCenterPileView();
+    centerPileView   = new MainCenterPileView();
+    burnPileView     = new BurnCenterPileView();
+    instructionsView = new InstructionsView();
 }
 
 void EgyptianRatscrewGame::playerSlappedCenter(int playerIdx) {

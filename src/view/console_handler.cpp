@@ -65,7 +65,7 @@ int ConsoleHandler::newWindow(ConsoleHandler::WindowPosition position) {
     case MainRight:
         scrollok(contentWindow, TRUE);
         break;
-    case Bottom:
+    case Middle:
     case SmallLeft:
     case SmallRight:
         scrollok(contentWindow, FALSE);
@@ -144,10 +144,14 @@ int ConsoleHandler::getTotalNCols() {
 }
 
 void ConsoleHandler::coordsForPosition(ConsoleHandler::WindowPosition position, int &nlines, int &ncols, int &x, int &y) {
+    // helpful ratios
     const double mainLeftToTotalVerticalRatio = 2.0 / 3.0;
     const double mainLeftToTotalHorizRatio = 2.0 / 3.0;
     const double smallLeftToTotalHorizRatio = 1.0 / 2.0;
     const int bottomHeight = 3;
+    const double horizRatioForRightWindows = 1.0 - mainLeftToTotalHorizRatio;
+    const double vertRatioForBottomWindows = 1.0 - mainLeftToTotalVerticalRatio;
+
     nlines = getTotalNLines();
     ncols = getTotalNCols();
     switch (position) {
@@ -158,28 +162,25 @@ void ConsoleHandler::coordsForPosition(ConsoleHandler::WindowPosition position, 
         break;
     case MainRight:
     {
-        const double horizRatio = 1.0 - mainLeftToTotalHorizRatio;
         y      = 0;
         x      = std::ceil(mainLeftToTotalHorizRatio * (double) ncols);
         nlines = mainLeftToTotalVerticalRatio        * (double) nlines;
-        ncols  = horizRatio                          * (double) ncols;
+        ncols  = horizRatioForRightWindows           * (double) ncols;
         break;
     }
-    case Bottom:
-        x = 0;
-        y = nlines - bottomHeight;
-        nlines = bottomHeight;
-        break;
+    case Middle:
     case SmallLeft:
     case SmallRight:
     {
-        const double vertRatio = 1.0 - mainLeftToTotalVerticalRatio;
-        x      = (position == SmallLeft)
-               ? 0
+        x      = (position != SmallRight) ? 0
                : std::ceil(smallLeftToTotalHorizRatio   * (double) ncols);
         y      = std::ceil(mainLeftToTotalVerticalRatio * (double) nlines);
-        ncols  = smallLeftToTotalHorizRatio             * (double) ncols;
-        nlines = vertRatio                              * (double) nlines - bottomHeight;
+        y     += (position == Middle) ? 0
+               : bottomHeight;
+        ncols  = (position == Middle) ? ncols
+               : smallLeftToTotalHorizRatio             * (double) ncols;
+        nlines = (position == Middle) ? bottomHeight
+               : vertRatioForBottomWindows              * (double) nlines - bottomHeight;
         break;
     }
     default:

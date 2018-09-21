@@ -9,7 +9,7 @@
 struct ConsoleHandler {
 public:
     enum MoveType { Player1Slap = 0, Player2Slap = 1, CardDown, QuitGame, Misc };
-    enum WindowPosition { MainLeft, MainRight, Bottom, SmallLeft, SmallRight };
+    enum WindowPosition { MainLeft, MainRight, Middle, SmallLeft, SmallRight };
     
     /* Keyboard related... */
     static MoveType waitForMove();

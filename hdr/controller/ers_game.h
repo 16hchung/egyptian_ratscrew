@@ -7,6 +7,7 @@
 class MainCenterPileView;
 class BurnCenterPileView;
 class PlayerView;
+class InstructionsView;
 
 class EgyptianRatscrewGame {
 public:
@@ -36,10 +37,11 @@ private:
     int currentPlayerIdx = 0;
     
     // Views
-    MainCenterPileView *centerPileView = nullptr;
-    BurnCenterPileView *burnPileView   = nullptr;
-    PlayerView         *player1View    = nullptr;
-    PlayerView         *player2View    = nullptr;
+    MainCenterPileView *centerPileView   = nullptr;
+    BurnCenterPileView *burnPileView     = nullptr;
+    PlayerView         *player1View      = nullptr;
+    PlayerView         *player2View      = nullptr;
+    InstructionsView   *instructionsView = nullptr;
 };
 
 #endif
