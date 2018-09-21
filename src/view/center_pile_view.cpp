@@ -4,5 +4,4 @@
 
 void CenterCardPileView::printCard(Card* card) {
     ConsoleHandler::print(card->toString() + "\n", getID());    
-    // ConsoleHandler::print("card: " + card->toString() + "\n", getID());    
 }

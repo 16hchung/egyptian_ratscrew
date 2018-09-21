@@ -45,13 +45,6 @@ private:
 
     std::string stringRepresentation = "";
 
-    static const std::string spadesTemplate;
-    static const std::string heartsTemplate;
-    static const std::string diamondsTemplate;
-    static const std::string clubsTemplate;
-
-    static const std::string templatePlaceholder;
-
 };
 
 #endif
