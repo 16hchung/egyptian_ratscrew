@@ -4,14 +4,17 @@
 int                                      ConsoleHandler::totalNLines  = -1;
 int                                      ConsoleHandler::totalNCols   = -1;
 bool                                     ConsoleHandler::f_useNcurses = false;
-std::vector<WINDOW *>                    ConsoleHandler::windows;
+std::vector<WINDOW *>                    ConsoleHandler::borderWindows;
+std::vector<WINDOW *>                    ConsoleHandler::contentWindows;
 std::set<ConsoleHandler::WindowPosition> ConsoleHandler::occupiedPositions;
 
 
 ConsoleHandler::MoveType ConsoleHandler::waitForMove() {
     const int maxTries = 10;
+    // using stdscr brings default to front and clears screen
+    WINDOW *scr = (contentWindows.empty()) ? stdscr : contentWindows.back(); 
     for (int i = 0; i < maxTries; ++i) {
-        char c = getch();
+        char c = wgetch(scr);
         switch (c) {
         case player1Key: case player1Key_l:
             return Player1Slap;
@@ -44,33 +47,36 @@ int ConsoleHandler::newWindow(ConsoleHandler::WindowPosition position) {
         throw std::runtime_error("Trying to create window in occupied position.");
     }
     setOccupiedPosition(position, true);
-    int indexID = windows.size();
+    int indexID = contentWindows.size();
     // figure out coordinates
     int nlines, ncols, x, y;
     coordsForPosition(position, nlines, ncols, x, y);
 
-    // create window
-    WINDOW *window = newwin(nlines, ncols, y, x);
+    // create window border
+    WINDOW *borderWindow = newwin(nlines, ncols, y, x);
+    box(borderWindow, 0, 0); // add border
+    wrefresh(borderWindow);
+    // smaller window stacked on top to preserve border
+    WINDOW *contentWindow = newwin(nlines - 2, ncols - 2, y + 1, x + 1); 
+    wrefresh(contentWindow);
     // set position-specific parameters
     switch (position) {
     case MainLeft:
     case MainRight:
-        scrollok(window, TRUE);
+        scrollok(contentWindow, TRUE);
         break;
     case Bottom:
     case SmallLeft:
     case SmallRight:
-        scrollok(window, FALSE);
+        scrollok(contentWindow, FALSE);
         break;
     default:
         throw std::runtime_error("Unexpected window position passed to ConsoleHandler::newWindow");
     }
-    box(window, 0, 0); // add border
-    wrefresh(window);
-    wgetch(window);
 
     // add to vector we're using to keep track of windows
-    windows.push_back(window);
+    contentWindows.push_back(contentWindow);
+    borderWindows.push_back(borderWindow);
     return indexID;
 }
 
@@ -79,22 +85,24 @@ void ConsoleHandler::closeWindow(bool prompt) {
         print("Press any key to exit.\n");
         getch();
     }
-    const int numWindows = windows.size();
+    const int numWindows = contentWindows.size();
     for (int winIdx = numWindows - 1; winIdx >= 0; winIdx--) {
-        delwin(windows[winIdx]);
+        delwin(contentWindows[winIdx]);
+        delwin(borderWindows[winIdx]);
     }
-    windows.clear();
+    contentWindows.clear();
     endwin();
     f_useNcurses = false;
 }
 
 void ConsoleHandler::print(std::string str, int windowIdx) {
-    if (windowIdx >= (int) windows.size()) {
+    if (windowIdx >= (int) contentWindows.size()) {
         throw std::runtime_error("Invalid ID passed to ConsoleHandler::print");
     }
-    WINDOW *window = (windowIdx < 0) ? stdscr : windows[windowIdx];
+    WINDOW *window = (windowIdx < 0) ? stdscr : contentWindows[windowIdx];
     if (f_useNcurses) {
         waddstr(window, str.c_str());
+        wrefresh(window);
     } else {
         std::cout << str;
     }

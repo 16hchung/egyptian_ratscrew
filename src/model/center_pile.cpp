@@ -105,3 +105,6 @@ bool CenterCardPile::cardPairHasRanks(Card *card1, Card *card2, Rank rank1, Rank
         || (card1->rank == rank2 && card2->rank == rank1);
 }
 
+int CenterCardPile::numCards() {
+    return cards.size() + burnPile.size();
+}

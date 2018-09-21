@@ -3,6 +3,10 @@
 #include "deck.h"
 #include "center_pile.h"
 
+// forward declarations
+class MainCenterPileView;
+class BurnCenterPileView;
+
 class EgyptianRatscrewGame {
 public:
     EgyptianRatscrewGame();
@@ -18,17 +22,21 @@ public:
 private:
     void printIntro();
     void initPlayers();
-    void initPanels();
+    void initViews();
     void nextPlayerTurn();
     Player *getLastPlayer(int playerIdx = -1);
     Player *getCurrentPlayer();
 
+    // Model
     Deck deck;
     CenterCardPile centerPile;
     std::vector<Player *> players;
 
     int currentPlayerIdx = 0;
-
+    
+    // Views
+    MainCenterPileView *centerPileView;
+    BurnCenterPileView *burnPileView;
 };
 
 #endif

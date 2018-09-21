@@ -2,10 +2,10 @@
 #define CENTER_PILE_VIEW_H
 #include "abstract_view.h"
 
-class CenterCardPileView: ViewBase {
+class CenterCardPileView: public ViewBase {
 public:
-    CenterCardPileView(int id) : ViewBase(id) {}
-private:
+    CenterCardPileView(ConsoleHandler::WindowPosition position) : ViewBase(position) {}
+protected:
 };
 
 #endif

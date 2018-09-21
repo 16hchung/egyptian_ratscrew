@@ -24,7 +24,8 @@ public:
     static void print(std::string str, int windowId = -1);
 
 private:
-    static std::vector<WINDOW *> windows;
+    static std::vector<WINDOW *> borderWindows;
+    static std::vector<WINDOW *> contentWindows;
     static std::set<WindowPosition> occupiedPositions;
     // flag to keep track of whether or not ncurses window is open 
     // (different printing/input method depending on whether window is open or not)

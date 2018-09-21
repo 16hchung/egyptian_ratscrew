@@ -4,12 +4,13 @@
 
 class ViewBase {
 public:
-    ViewBase(int ID) : ID(ID) {}
+    ViewBase(ConsoleHandler::WindowPosition position);
+    int getID();
 
+private:
     // want to abstract out everything having to do with curses: ConsoleHandler holds pointers
     // to all panels and just gives view obj an index which serves as an id
-    const int ID;
-protected:
+    int id;
 
 };
 

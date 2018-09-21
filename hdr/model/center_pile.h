@@ -15,6 +15,8 @@ public:
     void giveCardsToPlayer(Player *player);
     SlapType currentSlapType();
 
+    int numCards();
+    
 private:
     std::stack<Card *> cards;
     std::stack<Card *> burnPile;

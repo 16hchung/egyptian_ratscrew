@@ -1,12 +1,14 @@
 #include "ers_game.h"
 #include "console_handler.h"
+#include "main_center_pile_view.h"
+#include "burn_center_pile_view.h"
 
 using Cnsl = ConsoleHandler;
 
 EgyptianRatscrewGame::EgyptianRatscrewGame() {
     printIntro();
     initPlayers();
-    initPanels();
+    initViews();
     deck.deal(players);
 }
 
@@ -14,6 +16,8 @@ EgyptianRatscrewGame::~EgyptianRatscrewGame() {
     for (Player *player : players) {
         delete player;
     }
+    delete centerPileView;
+    delete burnPileView;
     Cnsl::print("A quick note: credit for playing card ASCII art goes to ejm98\n");
     Cnsl::print("Link to art here: https://www.asciiart.eu/miscellaneous/playing-cards\n\n");
     Cnsl::print("Thanks for playing!\n");
@@ -36,11 +40,13 @@ void EgyptianRatscrewGame::initPlayers() {
     players.push_back(player2);
 }
 
-void EgyptianRatscrewGame::initPanels() {
-    
+void EgyptianRatscrewGame::initViews() {
+    centerPileView = new MainCenterPileView();
+    burnPileView = new BurnCenterPileView();
 }
 
 void EgyptianRatscrewGame::playerSlappedCenter(int playerIdx) {
+    if (centerPile.numCards() <= 0) { return; } // if multiple slaps in a row, only process the first
     assert(0 <= playerIdx && playerIdx < players.size());
     Player *player = players[playerIdx];
     assert(player);
@@ -65,14 +71,13 @@ void EgyptianRatscrewGame::cardDown() {
     // since there's only room on the keyboard for 2 players,
     // game should be over if nextCardDown is null (ie this player ran out of cards)
     if (!nextCardDown) { 
-        Cnsl::print("no card down\n"); // TODO: delete this
         return;
     } 
     bool startedNewCountdown, wasInCountdown, countDownFinished;
     centerPile.addCard(nextCardDown, startedNewCountdown, wasInCountdown, countDownFinished);
-    Cnsl::print("card: " + nextCardDown->toString() + "\n");
-    Cnsl::print(players[0]->name + ": " + std::to_string(players[0]->getScore()) + "\n");
-    Cnsl::print(players[1]->name + ": " + std::to_string(players[1]->getScore()) + "\n\n");
+    Cnsl::print("card: " + nextCardDown->toString() + "\n", centerPileView->getID());
+    Cnsl::print(players[0]->name + ": " + std::to_string(players[0]->getScore()) + "\n", centerPileView->getID());
+    Cnsl::print(players[1]->name + ": " + std::to_string(players[1]->getScore()) + "\n\n", centerPileView->getID());
 
     // player only gets switched if no former countdown *that persisted*
     // (still switch if new countdown interrupts)
