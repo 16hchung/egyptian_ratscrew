@@ -30,18 +30,28 @@ public:
     // constructor
     Card(Suit suit, Rank rank);
 
-    std::string toString();
 
     // getters
+    std::string toString(); // have this here so we can lazy instantiate printable representation
     std::string suitString();
 
     // basic properties
     const Suit suit;
     const Rank rank;
-    std::string getStringID();
 
 private:
-    std::string stringID;
+    // Helper vars and functions for generating string representation
+    std::string generateStringRepresentation();
+
+    std::string stringRepresentation = "";
+
+    static const std::string spadesTemplate;
+    static const std::string heartsTemplate;
+    static const std::string diamondsTemplate;
+    static const std::string clubsTemplate;
+
+    static const std::string templatePlaceholder;
+
 };
 
 #endif

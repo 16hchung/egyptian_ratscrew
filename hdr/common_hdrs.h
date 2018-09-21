@@ -10,6 +10,8 @@
 #include <iostream>
 #include <stack>
 #include <set>
+#include <map>
+#include <regex>
 
 // c libs
 #include <cstdlib>

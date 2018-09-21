@@ -1,17 +1,21 @@
 #include "card.h"
+#include "card_string_reps.h"
 
-const std::vector<Card::Rank> Card::possibleRanks = { Card::Rank::Ace, Card::Rank::Two, 
-    Card::Rank::Three, Card::Rank::Four, Card::Rank::Five, Card::Rank::Six, Card::Rank::Seven, 
-    Card::Rank::Eight, Card::Rank::Nine, Card::Rank::Ten, Card::Rank::Jack, 
-    Card::Rank::Queen, Card::Rank::King };
+using rnk = Card::Rank;
+
+const std::vector<rnk> Card::possibleRanks = { rnk::Ace, rnk::Two, rnk::Three, rnk::Four, rnk::Five, 
+    rnk::Six, rnk::Seven, rnk::Eight, rnk::Nine, rnk::Ten, rnk::Jack, rnk::Queen, rnk::King };
 
 // Constructor
 Card::Card(Suit suit, Rank rank) : suit(suit), rank(rank) {
-    stringID = suitString() + static_cast<char>(rank);
 }
 
 std::string Card::toString() {
-    return suitString()  + ", " + static_cast<char>(rank);
+    if (stringRepresentation.empty()) {
+        stringRepresentation = generateStringRepresentation();
+    }
+    return stringRepresentation;
+    // return suitString()  + ", " + static_cast<char>(rank);
 }
 
 std::string Card::suitString() {
@@ -27,6 +31,16 @@ std::string Card::suitString() {
     }
 }
 
-std::string Card::getStringID() {
-    return stringID;
+std::string Card::generateStringRepresentation() {
+    std::string suitTemplate = 
+        (suit == Hearts)   ? CardStringTemplates::heartsTemplate   :
+        (suit == Spades)   ? CardStringTemplates::spadesTemplate   :
+        (suit == Diamonds) ? CardStringTemplates::diamondsTemplate :
+                             CardStringTemplates::clubsTemplate;
+    // rank of 10 is only one requiring two characters
+    std::string replacementWithSpace = " ";
+    replacementWithSpace += static_cast<char>(rank);
+    std::string placeholderReplacement = (rank == Rank::Ten) ? "10" : replacementWithSpace;
+    std::regex placeholderRegex(CardStringTemplates::templatePlaceholder);
+    return std::regex_replace(suitTemplate, placeholderRegex, placeholderReplacement);
 }
