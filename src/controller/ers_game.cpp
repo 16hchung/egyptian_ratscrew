@@ -28,6 +28,27 @@ EgyptianRatscrewGame::~EgyptianRatscrewGame() {
     Cnsl::print("Thanks for playing!\n");
 }
 
+void EgyptianRatscrewGame::play() {
+     Cnsl::MoveType move = Cnsl::waitForMove();
+     while (!isGameDone() && move != Cnsl::QuitGame) {
+         bool f_shouldQuit = false;
+         switch (move) {
+         case Cnsl::Player1Slap: case Cnsl::Player2Slap:
+             playerSlappedCenter((int) move); // enum values represent player index
+             break;
+         case Cnsl::CardDown:
+             cardDown();
+             break;
+         case Cnsl::QuitGame:
+         default:
+             f_shouldQuit = true;
+             break;
+         }
+         if (f_shouldQuit) { break; }
+         move = Cnsl::waitForMove();
+    }
+}
+
 void EgyptianRatscrewGame::printIntro() {
     Cnsl::print("Welcome to Egyptian Ratscrew!\n");
     Cnsl::print("Want a rundown of how to play?\n");

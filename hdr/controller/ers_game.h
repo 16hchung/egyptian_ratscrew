@@ -14,14 +14,15 @@ public:
     EgyptianRatscrewGame();
     ~EgyptianRatscrewGame();
 
-    void playerSlappedCenter(int playerIdx);
-    void cardDown();
-    bool isGameDone();
+    void play();
 
     // helpful debug methods, TODO: get rid of this
     void printPlayers();
 
 private:
+    void playerSlappedCenter(int playerIdx);
+    void cardDown();
+    bool isGameDone();
     void printIntro();
     void initPlayers();
     void initViews();
