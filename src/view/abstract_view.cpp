@@ -9,5 +9,5 @@ int ViewBase::getID() {
 }
 
 void ViewBase::clear() {
-    
+    ConsoleHandler::clearWindow(id);
 }

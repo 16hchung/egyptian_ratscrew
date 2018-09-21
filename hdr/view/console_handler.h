@@ -15,6 +15,9 @@ public:
     static MoveType waitForMove();
     static std::string getInput(size_t len, std::string prompt = "");
 
+    static const char player1Key   = 'D';
+    static const char player2Key   = 'K';
+    
     /* Window related... */
     static int newWindow(WindowPosition position);
     static void clearWindow(int windowId = -1);
@@ -47,9 +50,7 @@ private:
     static std::string getString(size_t len);
 
     // Constants
-    static const char player1Key   = 'D';
     static const char player1Key_l = 'd';
-    static const char player2Key   = 'K';
     static const char player2Key_l = 'k';
     static const char quitKey      = 'Q';
     static const char quitKey_l    = 'q';

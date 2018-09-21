@@ -2,14 +2,15 @@
 #include "console_handler.h"
 #include "main_center_pile_view.h"
 #include "burn_center_pile_view.h"
+#include "player_view.h"
 
 using Cnsl = ConsoleHandler;
 
 EgyptianRatscrewGame::EgyptianRatscrewGame() {
     printIntro();
     initPlayers();
-    initViews();
     deck.deal(players);
+    initViews();
 }
 
 EgyptianRatscrewGame::~EgyptianRatscrewGame() {
@@ -18,6 +19,8 @@ EgyptianRatscrewGame::~EgyptianRatscrewGame() {
     }
     delete centerPileView;
     delete burnPileView;
+    delete player1View;
+    delete player2View;
     Cnsl::print("A quick note: credit for playing card ASCII art goes to ejm98\n");
     Cnsl::print("Link to art here: https://www.asciiart.eu/miscellaneous/playing-cards\n\n");
     Cnsl::print("Thanks for playing!\n");
@@ -41,8 +44,11 @@ void EgyptianRatscrewGame::initPlayers() {
 }
 
 void EgyptianRatscrewGame::initViews() {
+    assert(players.size() == 2);
+    player1View = new PlayerView(Cnsl::SmallLeft,  players[0]->name, Cnsl::player1Key, players[0]->getScore());
+    player2View = new PlayerView(Cnsl::SmallRight, players[1]->name, Cnsl::player2Key, players[1]->getScore());
     centerPileView = new MainCenterPileView();
-    burnPileView = new BurnCenterPileView();
+    burnPileView   = new BurnCenterPileView();
 }
 
 void EgyptianRatscrewGame::playerSlappedCenter(int playerIdx) {
@@ -66,6 +72,7 @@ void EgyptianRatscrewGame::playerSlappedCenter(int playerIdx) {
 
 void EgyptianRatscrewGame::cardDown() {
     Player *currentPlayer = getCurrentPlayer();
+    PlayerView *currentPlayerView = (currentPlayerIdx) ? player2View : player1View;
     // dequeue card from current player
     Card *nextCardDown = currentPlayer->getCard();
     // since there's only room on the keyboard for 2 players,
@@ -76,9 +83,7 @@ void EgyptianRatscrewGame::cardDown() {
     bool startedNewCountdown, wasInCountdown, countDownFinished;
     centerPile.addCard(nextCardDown, startedNewCountdown, wasInCountdown, countDownFinished);
     centerPileView->printCard(nextCardDown);
-    // Cnsl::print(players[0]->name + ": " + std::to_string(players[0]->getScore()) + "\n", centerPileView->getID());
-    // Cnsl::print(players[1]->name + ": " + std::to_string(players[1]->getScore()) + "\n\n", centerPileView->getID());
-
+    currentPlayerView->update(currentPlayer->getScore());
     // player only gets switched if no former countdown *that persisted*
     // (still switch if new countdown interrupts)
     if (startedNewCountdown || !wasInCountdown) {

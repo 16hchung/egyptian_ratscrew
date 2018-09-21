@@ -6,6 +6,7 @@
 // forward declarations
 class MainCenterPileView;
 class BurnCenterPileView;
+class PlayerView;
 
 class EgyptianRatscrewGame {
 public:
@@ -35,8 +36,10 @@ private:
     int currentPlayerIdx = 0;
     
     // Views
-    MainCenterPileView *centerPileView;
-    BurnCenterPileView *burnPileView;
+    MainCenterPileView *centerPileView = nullptr;
+    BurnCenterPileView *burnPileView   = nullptr;
+    PlayerView         *player1View    = nullptr;
+    PlayerView         *player2View    = nullptr;
 };
 
 #endif
