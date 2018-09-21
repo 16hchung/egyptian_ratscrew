@@ -17,6 +17,7 @@ public:
 
     /* Window related... */
     static int newWindow(WindowPosition position);
+    static void clearWindow(int windowId = -1);
 
     /* Both window and keyboard related... */
     static void initWindow();

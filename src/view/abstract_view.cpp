@@ -7,3 +7,7 @@ ViewBase::ViewBase(ConsoleHandler::WindowPosition position) {
 int ViewBase::getID() {
     return id;
 }
+
+void ViewBase::clear() {
+    
+}

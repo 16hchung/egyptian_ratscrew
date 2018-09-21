@@ -75,9 +75,9 @@ void EgyptianRatscrewGame::cardDown() {
     } 
     bool startedNewCountdown, wasInCountdown, countDownFinished;
     centerPile.addCard(nextCardDown, startedNewCountdown, wasInCountdown, countDownFinished);
-    Cnsl::print("card: " + nextCardDown->toString() + "\n", centerPileView->getID());
-    Cnsl::print(players[0]->name + ": " + std::to_string(players[0]->getScore()) + "\n", centerPileView->getID());
-    Cnsl::print(players[1]->name + ": " + std::to_string(players[1]->getScore()) + "\n\n", centerPileView->getID());
+    centerPileView->printCard(nextCardDown);
+    // Cnsl::print(players[0]->name + ": " + std::to_string(players[0]->getScore()) + "\n", centerPileView->getID());
+    // Cnsl::print(players[1]->name + ": " + std::to_string(players[1]->getScore()) + "\n\n", centerPileView->getID());
 
     // player only gets switched if no former countdown *that persisted*
     // (still switch if new countdown interrupts)

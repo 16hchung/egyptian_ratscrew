@@ -1,4 +1,3 @@
-
 #ifndef CARD_H
 #define CARD_H
 #include "common_hdrs.h"
@@ -39,8 +38,10 @@ public:
     // basic properties
     const Suit suit;
     const Rank rank;
+    std::string getStringID();
 
 private:
+    std::string stringID;
 };
 
 #endif

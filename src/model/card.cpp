@@ -7,6 +7,7 @@ const std::vector<Card::Rank> Card::possibleRanks = { Card::Rank::Ace, Card::Ran
 
 // Constructor
 Card::Card(Suit suit, Rank rank) : suit(suit), rank(rank) {
+    stringID = suitString() + static_cast<char>(rank);
 }
 
 std::string Card::toString() {
@@ -24,4 +25,8 @@ std::string Card::suitString() {
     case Clubs:
         return "Clubs";
     }
+}
+
+std::string Card::getStringID() {
+    return stringID;
 }

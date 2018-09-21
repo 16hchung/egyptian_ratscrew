@@ -80,6 +80,16 @@ int ConsoleHandler::newWindow(ConsoleHandler::WindowPosition position) {
     return indexID;
 }
 
+void ConsoleHandler::clearWindow(int windowId) {
+    if (windowId < 0) {
+        wclear(stdscr);
+    } else if (windowId < contentWindows.size()) {
+        wclear(contentWindows[windowId]);
+    } else {
+        throw std::runtime_error("unexpected window id");
+    }
+}
+
 void ConsoleHandler::closeWindow(bool prompt) {
     if (prompt) {
         print("Press any key to exit.\n");
