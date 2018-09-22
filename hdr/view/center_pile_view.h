@@ -6,7 +6,8 @@ class Card;
 
 class CenterCardPileView: public ViewBase {
 public:
-    CenterCardPileView(ConsoleHandler::WindowPosition position) : ViewBase(position) {}
+    CenterCardPileView(ConsoleHandler::WindowPosition position, std::string label)
+    : ViewBase(position, label) {}
 
     void printCard(Card* card);
 

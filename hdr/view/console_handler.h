@@ -18,7 +18,7 @@ public:
     static const char player2Key   = 'K';
     
     /* Window related... */
-    static int newWindow(WindowPosition position);
+    static int newWindow(WindowPosition position, std::string windowLabel = "");
     static void clearWindow(int windowId = -1);
 
     /* Both window and keyboard related... */

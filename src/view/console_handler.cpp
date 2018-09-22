@@ -50,7 +50,7 @@ void ConsoleHandler::initWindow() {
     scrollok(stdscr, TRUE);
 }
 
-int ConsoleHandler::newWindow(ConsoleHandler::WindowPosition position) {
+int ConsoleHandler::newWindow(ConsoleHandler::WindowPosition position, std::string windowLabel) {
     if (isPositionOccupied(position)) {
         throw std::runtime_error("Trying to create window in occupied position.");
     }
@@ -61,11 +61,16 @@ int ConsoleHandler::newWindow(ConsoleHandler::WindowPosition position) {
     coordsForPosition(position, nlines, ncols, x, y);
 
     // create window border
+    const int topBorderBuffer = (windowLabel.empty()) ? 1 : 2;
+    const int bottomBorderBuffer = 1;
+    const int totalVertBuffer = topBorderBuffer + bottomBorderBuffer;
     WINDOW *borderWindow = newwin(nlines, ncols, y, x);
+    windowLabel = "\n   " + windowLabel;
+    waddstr(borderWindow, windowLabel.c_str());
     box(borderWindow, 0, 0); // add border
     wrefresh(borderWindow);
     // smaller window stacked on top to preserve border
-    WINDOW *contentWindow = newwin(nlines - 2, ncols - 2, y + 1, x + 1); 
+    WINDOW *contentWindow = newwin(nlines - totalVertBuffer, ncols - 2, y + topBorderBuffer, x + 1); 
     wrefresh(contentWindow);
     // set position-specific parameters
     switch (position) {
@@ -91,8 +96,10 @@ int ConsoleHandler::newWindow(ConsoleHandler::WindowPosition position) {
 void ConsoleHandler::clearWindow(int windowId) {
     if (windowId < 0) {
         wclear(stdscr);
+        wrefresh(stdscr);
     } else if (windowId < contentWindows.size()) {
         wclear(contentWindows[windowId]);
+        wrefresh(contentWindows[windowId]);
     } else {
         throw std::runtime_error("unexpected window id");
     }

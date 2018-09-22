@@ -4,7 +4,7 @@
 
 class ViewBase {
 public:
-    ViewBase(ConsoleHandler::WindowPosition position);
+    ViewBase(ConsoleHandler::WindowPosition position, std::string label = "");
     int getID();
     void clear();
 

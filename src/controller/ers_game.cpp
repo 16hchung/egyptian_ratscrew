@@ -9,8 +9,8 @@ using Cnsl = ConsoleHandler;
 
 EgyptianRatscrewGame::EgyptianRatscrewGame() {
     Cnsl::initWindow();
-    printIntro();
     initPlayers();
+    printIntro();
     deck.deal(players);
     initViews();
 }
@@ -77,8 +77,8 @@ void EgyptianRatscrewGame::initViews() {
     instructionsView = new InstructionsView();
 }
 
-void EgyptianRatscrewGame::playerSlappedCenter(int playerIdx) {
-    if (centerPile.numCards() <= 0) { return; } // if multiple slaps in a row, only process the first
+bool EgyptianRatscrewGame::playerSlappedCenter(int playerIdx) {
+    if (centerPile.numCards() <= 0) { return false; } // if multiple slaps in a row, only process the first
     assert(0 <= playerIdx && playerIdx < players.size());
     Player *player = players[playerIdx];
     PlayerView *playerView = (playerIdx) ? player2View : player1View;
@@ -98,7 +98,7 @@ void EgyptianRatscrewGame::playerSlappedCenter(int playerIdx) {
         burnPileView->clear();
     }
     playerView->update(player->getScore());
-    return;
+    return slap != CenterCardPile::Invalid;
 }
 
 void EgyptianRatscrewGame::cardDown() {
@@ -124,14 +124,21 @@ void EgyptianRatscrewGame::cardDown() {
     // if we are in the middle of a countdown and there is no new face card to reset it
     if (!countDownFinished) { return; }
     // if countdown is over and pile is not slappable, then last player gets center pile,
-    // otherwise leave it alone
-    CenterCardPile::SlapType slap = centerPile.currentSlapType();
-    if (slap == CenterCardPile::Invalid) {
+    // otherwise see if player is going to slap and handle accordingly
+    Cnsl::MoveType nextMove = instructionsView->printCountdownOver();
+    bool shouldLastPlayerGetCenterPile = true;
+    if (nextMove != Cnsl::Continue) {
+        shouldLastPlayerGetCenterPile = !playerSlappedCenter((int) nextMove);
+    }
+    if (shouldLastPlayerGetCenterPile) {    
         Player *lastPlayer = getLastPlayer();
         assert(lastPlayer);
         centerPile.giveCardsToPlayer(lastPlayer);
+        centerPileView->clear();
+        burnPileView->clear();
         nextPlayerTurn();
     }
+    instructionsView->printDefault();
 }
 
 void EgyptianRatscrewGame::nextPlayerTurn() {

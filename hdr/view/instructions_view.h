@@ -10,6 +10,8 @@ public:
     void printCredits(std::string winnerName = "");
     void printValidSlap(std::string playerName, CenterCardPile::SlapType slapType);
     void printInvalidSlap(std::string playerName);
+    void printDefault();
+    ConsoleHandler::MoveType printCountdownOver();
 
 private:
     static const std::string defaultText;

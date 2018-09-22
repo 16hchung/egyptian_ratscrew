@@ -4,7 +4,7 @@
 
 class BurnCenterPileView : public CenterCardPileView {
 public:
-    BurnCenterPileView() : CenterCardPileView(ConsoleHandler::MainRight) {}
+    BurnCenterPileView() : CenterCardPileView(ConsoleHandler::MainRight, "BURN PILE") {}
 };
 
 #endif

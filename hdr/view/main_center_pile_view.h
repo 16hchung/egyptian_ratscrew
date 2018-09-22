@@ -4,7 +4,7 @@
 
 class MainCenterPileView : public CenterCardPileView {
 public:
-    MainCenterPileView() : CenterCardPileView(ConsoleHandler::MainLeft) {}
+    MainCenterPileView() : CenterCardPileView(ConsoleHandler::MainLeft, "CENTRAL PILE") {}
 private:
 };
 

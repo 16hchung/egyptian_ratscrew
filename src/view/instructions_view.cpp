@@ -4,11 +4,10 @@ using Cnsl = ConsoleHandler;
 using Slap = CenterCardPile::SlapType;
 
 const std::string InstructionsView::defaultText =
-    "Press spacebar to put down next card. Press Q to quit.";
+    "Press SPACEBAR to put down next card. Press Q to quit.";
 
 InstructionsView::InstructionsView() : ViewBase(ConsoleHandler::Middle) {
-    Cnsl::clearWindow(getID());
-    Cnsl::print(defaultText, getID());
+    printDefault();
 }
 
 void InstructionsView::printCredits(std::string winnerName) {
@@ -45,13 +44,29 @@ void InstructionsView::printInvalidSlap(std::string playerName) {
     waitForSpecificKey(Cnsl::Continue);
 }
 
+Cnsl::MoveType InstructionsView::printCountdownOver() {
+    Cnsl::clearWindow(getID());
+    Cnsl::print("Face card countdown ran out.\n", getID());
+    Cnsl::print("Press C to continue or slap the deck if it's slappable.\n", getID());
+    // if pile is slappable, want to process slap
+    Cnsl::MoveType move = Cnsl::waitForMove(getID());
+    while (move != Cnsl::Continue && move != Cnsl::Player1Slap && move != Cnsl::Player2Slap) {
+        move = Cnsl::waitForMove(getID());
+    }
+    return move;
+}
+
+void InstructionsView::printDefault() {
+    Cnsl::clearWindow(getID());
+    Cnsl::print(defaultText, getID());
+}
+
 void InstructionsView::waitForSpecificKey(Cnsl::MoveType moveType, bool resetContent) {
     Cnsl::MoveType move = Cnsl::waitForMove(getID());
     while (move != moveType) {
         move = Cnsl::waitForMove(getID());
     }
     if (resetContent) {
-        Cnsl::clearWindow(getID());
-        Cnsl::print(defaultText, getID());
+        printDefault();
     }
 }

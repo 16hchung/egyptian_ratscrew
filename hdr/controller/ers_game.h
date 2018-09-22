@@ -17,8 +17,9 @@ public:
     void play();
 
 private:
-    void playerSlappedCenter(int playerIdx);
+    bool playerSlappedCenter(int playerIdx);
     void cardDown();
+    
     bool isGameDone();
     void printIntro();
     void initPlayers();
