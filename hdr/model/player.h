@@ -16,9 +16,6 @@ public:
 
     int getScore(); // just number of cards in possession
 
-    // helpful debug methods
-    void print();
-
 private:
     std::deque<Card *> cards;
 };

@@ -9,10 +9,16 @@ std::vector<WINDOW *>                    ConsoleHandler::contentWindows;
 std::set<ConsoleHandler::WindowPosition> ConsoleHandler::occupiedPositions;
 
 
-ConsoleHandler::MoveType ConsoleHandler::waitForMove() {
+ConsoleHandler::MoveType ConsoleHandler::waitForMove(int windowIdx, std::string incorrectKeyText) {
     const int maxTries = 10;
     // using stdscr brings default to front and clears screen
-    WINDOW *scr = (contentWindows.empty()) ? stdscr : contentWindows.back(); 
+    WINDOW *scr = (contentWindows.empty()) ? stdscr 
+                : (windowIdx >= 0)         ? contentWindows[windowIdx]
+                : contentWindows.back();
+    if (incorrectKeyText.empty()) {
+        incorrectKeyText = "I don't recognize that key. "
+                           "Press spacebar to put card down, Q to quit, or C to continue.\n";
+    }
     for (int i = 0; i < maxTries; ++i) {
         char c = wgetch(scr);
         switch (c) {
@@ -20,16 +26,18 @@ ConsoleHandler::MoveType ConsoleHandler::waitForMove() {
             return Player1Slap;
         case player2Key: case player2Key_l:
             return Player2Slap;
+        case continueKey: case continueKey_l:
+            return Continue;
         case cardDownKey:
             return CardDown;
         case quitKey: case quitKey_l:
             return QuitGame;
         default:
-            print("I don't recognize that key. \n");
-            print("Press D (player 1 slap), K (player 2 slap), Space (card down), or Q (quit).\n");
+            clearWindow(windowIdx);
+            print(incorrectKeyText, windowIdx);
         }
     }
-    print("That was 10 unrecognized key presses. Quitting game.\n");
+    print("That was 10 unrecognized key presses. Quitting game.\n", windowIdx);
     return QuitGame;
 }
 
@@ -90,11 +98,7 @@ void ConsoleHandler::clearWindow(int windowId) {
     }
 }
 
-void ConsoleHandler::closeWindow(bool prompt) {
-    if (prompt) {
-        print("Press any key to exit.\n");
-        getch();
-    }
+void ConsoleHandler::closeWindow() {
     const int numWindows = contentWindows.size();
     for (int winIdx = numWindows - 1; winIdx >= 0; winIdx--) {
         delwin(contentWindows[winIdx]);
@@ -148,7 +152,7 @@ void ConsoleHandler::coordsForPosition(ConsoleHandler::WindowPosition position, 
     const double mainLeftToTotalVerticalRatio = 2.0 / 3.0;
     const double mainLeftToTotalHorizRatio = 2.0 / 3.0;
     const double smallLeftToTotalHorizRatio = 1.0 / 2.0;
-    const int bottomHeight = 3;
+    const int bottomHeight = 6;
     const double horizRatioForRightWindows = 1.0 - mainLeftToTotalHorizRatio;
     const double vertRatioForBottomWindows = 1.0 - mainLeftToTotalVerticalRatio;
 
@@ -161,17 +165,14 @@ void ConsoleHandler::coordsForPosition(ConsoleHandler::WindowPosition position, 
         ncols  = mainLeftToTotalHorizRatio    * (double) ncols;
         break;
     case MainRight:
-    {
         y      = 0;
         x      = std::ceil(mainLeftToTotalHorizRatio * (double) ncols);
         nlines = mainLeftToTotalVerticalRatio        * (double) nlines;
         ncols  = horizRatioForRightWindows           * (double) ncols;
         break;
-    }
     case Middle:
     case SmallLeft:
     case SmallRight:
-    {
         x      = (position != SmallRight) ? 0
                : std::ceil(smallLeftToTotalHorizRatio   * (double) ncols);
         y      = std::ceil(mainLeftToTotalVerticalRatio * (double) nlines);
@@ -182,7 +183,6 @@ void ConsoleHandler::coordsForPosition(ConsoleHandler::WindowPosition position, 
         nlines = (position == Middle) ? bottomHeight
                : vertRatioForBottomWindows              * (double) nlines - bottomHeight;
         break;
-    }
     default:
         throw std::runtime_error("Unexpected window position passed to ConsoleHandler::coordsForPosition");
         break;
@@ -206,11 +206,7 @@ std::string ConsoleHandler::getString(size_t len) {
     if (f_useNcurses) {
         echo();
         char cInput[len];
-        int status = getnstr(cInput, len);
-        if (status != OK) {
-            closeWindow(false);
-            throw std::runtime_error("Something went wrong. Please restart the terminal and run bin/main again.");
-        }
+        getnstr(cInput, len);
         std::string input(cInput);
         noecho();
         return input;

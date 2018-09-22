@@ -16,9 +16,6 @@ public:
 
     void play();
 
-    // helpful debug methods, TODO: get rid of this
-    void printPlayers();
-
 private:
     void playerSlappedCenter(int playerIdx);
     void cardDown();
@@ -31,6 +28,8 @@ private:
     Player *getCurrentPlayer();
 
     // Model
+    std::string winnerName = "";
+
     Deck deck;
     CenterCardPile centerPile;
     std::vector<Player *> players;

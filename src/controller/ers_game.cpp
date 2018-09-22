@@ -8,6 +8,7 @@
 using Cnsl = ConsoleHandler;
 
 EgyptianRatscrewGame::EgyptianRatscrewGame() {
+    Cnsl::initWindow();
     printIntro();
     initPlayers();
     deck.deal(players);
@@ -15,6 +16,7 @@ EgyptianRatscrewGame::EgyptianRatscrewGame() {
 }
 
 EgyptianRatscrewGame::~EgyptianRatscrewGame() {
+    instructionsView->printCredits(winnerName);
     for (Player *player : players) {
         delete player;
     }
@@ -23,29 +25,29 @@ EgyptianRatscrewGame::~EgyptianRatscrewGame() {
     delete player1View;
     delete player2View;
     delete instructionsView;
-    Cnsl::print("A quick note: credit for playing card ASCII art goes to ejm98\n");
-    Cnsl::print("Link to art here: https://www.asciiart.eu/miscellaneous/playing-cards\n\n");
-    Cnsl::print("Thanks for playing!\n");
+    Cnsl::closeWindow();
 }
 
 void EgyptianRatscrewGame::play() {
-     Cnsl::MoveType move = Cnsl::waitForMove();
-     while (!isGameDone() && move != Cnsl::QuitGame) {
-         bool f_shouldQuit = false;
-         switch (move) {
-         case Cnsl::Player1Slap: case Cnsl::Player2Slap:
-             playerSlappedCenter((int) move); // enum values represent player index
-             break;
-         case Cnsl::CardDown:
-             cardDown();
-             break;
-         case Cnsl::QuitGame:
-         default:
-             f_shouldQuit = true;
-             break;
-         }
-         if (f_shouldQuit) { break; }
-         move = Cnsl::waitForMove();
+    Cnsl::MoveType move = Cnsl::waitForMove(instructionsView->getID());
+    while (!isGameDone() && move != Cnsl::QuitGame) {
+        bool f_shouldQuit = false;
+        switch (move) {
+        case Cnsl::Player1Slap: case Cnsl::Player2Slap:
+            playerSlappedCenter((int) move); // enum values represent player index
+            break;
+        case Cnsl::CardDown:
+            cardDown();
+            break;
+        case Cnsl::Continue:
+            break;
+        case Cnsl::QuitGame:
+        default:
+            f_shouldQuit = true;
+            break;
+        }
+        if (f_shouldQuit) { break; }
+        move = Cnsl::waitForMove(instructionsView->getID());
     }
 }
 
@@ -79,18 +81,23 @@ void EgyptianRatscrewGame::playerSlappedCenter(int playerIdx) {
     if (centerPile.numCards() <= 0) { return; } // if multiple slaps in a row, only process the first
     assert(0 <= playerIdx && playerIdx < players.size());
     Player *player = players[playerIdx];
+    PlayerView *playerView = (playerIdx) ? player2View : player1View;
     assert(player);
     // determine if pile is slappable
     CenterCardPile::SlapType slap = centerPile.currentSlapType();
     if (slap == CenterCardPile::Invalid) {
-        Cnsl::print("Invalid slap: " + player->name + "\n");
+        instructionsView->printInvalidSlap(player->name);
         Card *card = player->getCard();
         centerPile.burnCard(card);
+        burnPileView->printCard(card);
     } else {
-        Cnsl::print("Valid slap: " + player->name + "\n");
+        instructionsView->printValidSlap(player->name, slap);
         centerPile.giveCardsToPlayer(player);
         currentPlayerIdx = playerIdx;
+        centerPileView->clear();
+        burnPileView->clear();
     }
+    playerView->update(player->getScore());
     return;
 }
 
@@ -152,16 +159,9 @@ bool EgyptianRatscrewGame::isGameDone() {
         assert(player);
         if (player->getScore() <= 0) {
             Player *winner = getLastPlayer(playerIdx);
-            Cnsl::print(winner->name + " won! Great Job!");
+            winnerName = winner->name;
             return true;
         }
     }
     return false;
-}
-
-void EgyptianRatscrewGame::printPlayers() {
-    for (Player *player : players) {
-        assert(player);
-        player->print();
-    }
 }

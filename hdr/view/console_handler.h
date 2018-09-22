@@ -8,11 +8,10 @@
 // struct instead of namespace
 struct ConsoleHandler {
 public:
-    enum MoveType { Player1Slap = 0, Player2Slap = 1, CardDown, QuitGame, Misc };
+    enum MoveType { Player1Slap = 0, Player2Slap = 1, CardDown, Continue, QuitGame, Misc };
     enum WindowPosition { MainLeft, MainRight, Middle, SmallLeft, SmallRight };
     
     /* Keyboard related... */
-    static MoveType waitForMove();
     static std::string getInput(size_t len, std::string prompt = "");
 
     static const char player1Key   = 'D';
@@ -24,7 +23,8 @@ public:
 
     /* Both window and keyboard related... */
     static void initWindow();
-    static void closeWindow(bool prompt = true);
+    static void closeWindow();
+    static MoveType waitForMove(int windowID = -1, std::string incorrectKeyText = "");
     static void print(std::string str, int windowId = -1);
 
 private:
@@ -50,6 +50,8 @@ private:
     static std::string getString(size_t len);
 
     // Constants
+    static const char continueKey  = 'C';
+    static const char continueKey_l= 'c';
     static const char player1Key_l = 'd';
     static const char player2Key_l = 'k';
     static const char quitKey      = 'Q';

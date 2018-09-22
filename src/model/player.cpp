@@ -25,14 +25,3 @@ Card * Player::getCard() {
 int Player::getScore() {
     return cards.size();
 }
-
-/* Helpful Debug Methods */
-
-void Player::print() {
-    ConsoleHandler::print(name + "\n");
-    for (Card *card : cards) {
-        assert(card);
-        ConsoleHandler::print(card->toString() + "\n");
-    }
-    ConsoleHandler::print("\n");
-}

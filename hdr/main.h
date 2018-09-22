@@ -9,6 +9,5 @@ Description: __
 #define MAIN_H
 
 int main(int argc, char const *argv[]);
-void playGame();
 
 #endif
