@@ -4,6 +4,7 @@
 #include "burn_center_pile_view.h"
 #include "player_view.h"
 #include "instructions_view.h"
+#include "intro_helper.h"
 
 using Cnsl = ConsoleHandler;
 
@@ -39,8 +40,6 @@ void EgyptianRatscrewGame::play() {
         case Cnsl::CardDown:
             cardDown();
             break;
-        case Cnsl::Continue:
-            break;
         case Cnsl::QuitGame:
         default:
             f_shouldQuit = true;
@@ -52,9 +51,23 @@ void EgyptianRatscrewGame::play() {
 }
 
 void EgyptianRatscrewGame::printIntro() {
+    const std::string yes   = "Y";
+    const std::string yes_l = "y";
+    const std::string no    = "N";
+    const std::string no_l  = "n";
+
     Cnsl::print("Welcome to Egyptian Ratscrew!\n");
-    Cnsl::print("Want a rundown of how to play?\n");
-    // TODO: print instructions
+    std::string yesOrNo = "";
+    while (yesOrNo != yes && yesOrNo != yes_l && yesOrNo != no && yesOrNo != no_l) {
+        yesOrNo = Cnsl::getInput(1, "Want a rundown of how to play?");
+        Cnsl::print("\n");
+    }
+    if (yesOrNo == yes || yesOrNo == yes_l) {
+        if (players.size() != 2) {
+            throw std::runtime_error("Trying to print intro before initlializing players.");
+        }
+        IntroHelper::goThroughIntro(players[0]->name, players[1]->name);
+    }
 }
 
 void EgyptianRatscrewGame::initPlayers() {
@@ -127,7 +140,7 @@ void EgyptianRatscrewGame::cardDown() {
     // otherwise see if player is going to slap and handle accordingly
     Cnsl::MoveType nextMove = instructionsView->printCountdownOver();
     bool shouldLastPlayerGetCenterPile = true;
-    if (nextMove != Cnsl::Continue) {
+    if (nextMove != Cnsl::CardDown) {
         shouldLastPlayerGetCenterPile = !playerSlappedCenter((int) nextMove);
     }
     if (shouldLastPlayerGetCenterPile) {    

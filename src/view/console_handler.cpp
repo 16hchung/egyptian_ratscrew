@@ -1,5 +1,6 @@
 #include "console_handler.h"
 
+
 // Declare static members
 int                                      ConsoleHandler::totalNLines  = -1;
 int                                      ConsoleHandler::totalNCols   = -1;
@@ -9,7 +10,9 @@ std::vector<WINDOW *>                    ConsoleHandler::contentWindows;
 std::set<ConsoleHandler::WindowPosition> ConsoleHandler::occupiedPositions;
 
 
-ConsoleHandler::MoveType ConsoleHandler::waitForMove(int windowIdx, std::string incorrectKeyText) {
+ConsoleHandler::MoveType ConsoleHandler::waitForMove(int windowIdx, 
+                                                     std::string incorrectKeyText, 
+                                                     bool acceptMisc) {
     const int maxTries = 10;
     // using stdscr brings default to front and clears screen
     WINDOW *scr = (contentWindows.empty()) ? stdscr 
@@ -26,18 +29,18 @@ ConsoleHandler::MoveType ConsoleHandler::waitForMove(int windowIdx, std::string 
             return Player1Slap;
         case player2Key: case player2Key_l:
             return Player2Slap;
-        case continueKey: case continueKey_l:
-            return Continue;
         case cardDownKey:
             return CardDown;
         case quitKey: case quitKey_l:
             return QuitGame;
         default:
+            if (acceptMisc) { return Misc; }
             clearWindow(windowIdx);
             print(incorrectKeyText, windowIdx);
         }
     }
-    print("That was 10 unrecognized key presses. Quitting game.\n", windowIdx);
+    print("That was 10 unrecognized key presses. Quitting game. Press any key.\n", windowIdx);
+    wgetch(scr);
     return QuitGame;
 }
 

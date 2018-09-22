@@ -33,24 +33,24 @@ void InstructionsView::printValidSlap(std::string playerName, Slap slapType) {
                            : (slapType == Slap::Divorce)   ? "Divorce"
                            : "Invalid";
     Cnsl::print("Valid slap by " + playerName + ": " + slapString + "\n", getID());
-    Cnsl::print("Press C to continue.", getID());
-    waitForSpecificKey(Cnsl::Continue);
+    Cnsl::print("Press SPACEBAR to continue.", getID());
+    waitForSpecificKey(Cnsl::CardDown);
 }
 
 void InstructionsView::printInvalidSlap(std::string playerName) {
     Cnsl::clearWindow(getID());
     Cnsl::print(playerName + " made an invalid slap! Burn card added to center.\n", getID());
-    Cnsl::print("Press C to continue.", getID());
-    waitForSpecificKey(Cnsl::Continue);
+    Cnsl::print("Press SPACEBAR to continue.", getID());
+    waitForSpecificKey(Cnsl::CardDown);
 }
 
 Cnsl::MoveType InstructionsView::printCountdownOver() {
     Cnsl::clearWindow(getID());
     Cnsl::print("Face card countdown ran out.\n", getID());
-    Cnsl::print("Press C to continue or slap the deck if it's slappable.\n", getID());
+    Cnsl::print("Press SPACEBAR to continue or slap the deck if it's slappable.\n", getID());
     // if pile is slappable, want to process slap
     Cnsl::MoveType move = Cnsl::waitForMove(getID());
-    while (move != Cnsl::Continue && move != Cnsl::Player1Slap && move != Cnsl::Player2Slap) {
+    while (move != Cnsl::CardDown && move != Cnsl::Player1Slap && move != Cnsl::Player2Slap) {
         move = Cnsl::waitForMove(getID());
     }
     return move;
