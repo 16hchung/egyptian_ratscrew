@@ -11,8 +11,8 @@ int main(int argc, char const *argv[])
 
 void resizeWarning() {
     std::cout << std::endl << "***********************************************" << std::endl;
-    std::cout << "Important note: avoid resizing your terminal window, as this can cause unexpected "
-                 "behavior. Type \"ok\" to continue: ";
+    std::cout << "Important note: avoid resizing your terminal window or changing font size, "
+                 "as this can cause unexpected behavior. " << std::endl << "Type \"ok\" to continue: ";
     std::string okay;
     std::cin >> okay;
     while (okay != "ok") {

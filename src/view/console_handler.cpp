@@ -20,7 +20,7 @@ ConsoleHandler::MoveType ConsoleHandler::waitForMove(int windowIdx,
                 : contentWindows.back();
     if (incorrectKeyText.empty()) {
         incorrectKeyText = "I don't recognize that key. "
-                           "Press spacebar to put card down, Q to quit, or C to continue.\n";
+                           "Press SPACEBAR to put card down (or continue when applicable) and  Q to quit.\n";
     }
     for (int i = 0; i < maxTries; ++i) {
         char c = wgetch(scr);
