@@ -20,6 +20,8 @@ public:
     /* Window related... */
     static int newWindow(WindowPosition position, std::string windowLabel = "");
     static void clearWindow(int windowId = -1);
+    static int getTotalNLines(); // lazy initialize
+    static int getTotalNCols();
 
     /* Both window and keyboard related... */
     static void initWindow();
@@ -38,9 +40,6 @@ private:
     /* Window helpers... */
     static int totalNLines;
     static int totalNCols;
-
-    static int getTotalNLines(); // lazy initialize
-    static int getTotalNCols();
 
     static void coordsForPosition(WindowPosition position, int &nlines, int &ncols, int &x, int &y);
     static bool isPositionOccupied(WindowPosition position);

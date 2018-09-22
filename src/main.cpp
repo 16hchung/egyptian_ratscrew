@@ -19,4 +19,5 @@ void resizeWarning() {
         std::cout << "Type \"ok\" to continue: ";
         std::cin >> okay;
     }
+    std::cout << std::endl;
 }

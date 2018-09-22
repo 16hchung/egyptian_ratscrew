@@ -11,7 +11,7 @@ void PlayerView::update(int cardCount) {
     clear();
     const std::string underline(playerName.size(), '-');
     ConsoleHandler::print(playerName + "\n", getID());
-    ConsoleHandler::print(underline + "\n\n",  getID());
+    ConsoleHandler::print(underline + "\n",  getID());
     ConsoleHandler::print(std::to_string(cardCount) + " cards\n\n",  getID());
     ConsoleHandler::print("Press " + std::string(1, slapChar) + " to slap",  getID());
 }

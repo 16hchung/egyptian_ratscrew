@@ -58,6 +58,8 @@ void IntroHelper::goThroughIntro(std::string player1name, std::string player2nam
 
     printNext = "Those are all the rules! You're ready to play!\n";
     printAndWait(printNext);
+
+    Cnsl::clearWindow();
 }
 
 void IntroHelper::printAndWait(std::string toPrint, bool isDone) {

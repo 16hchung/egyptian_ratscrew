@@ -19,7 +19,8 @@ public:
 private:
     bool playerSlappedCenter(int playerIdx);
     void cardDown();
-    
+
+    void checkWindowSize();
     bool isGameDone();
     void printIntro();
     void initPlayers();
@@ -30,6 +31,7 @@ private:
 
     // Model
     std::string winnerName = "";
+    bool shouldKillGame = false;
 
     Deck deck;
     CenterCardPile centerPile;

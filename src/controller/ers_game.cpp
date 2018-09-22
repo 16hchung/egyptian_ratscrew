@@ -11,25 +11,30 @@ using Cnsl = ConsoleHandler;
 EgyptianRatscrewGame::EgyptianRatscrewGame() {
     Cnsl::initWindow();
     initPlayers();
+    checkWindowSize();
+    if (shouldKillGame) { return; }
     printIntro();
     deck.deal(players);
     initViews();
 }
 
 EgyptianRatscrewGame::~EgyptianRatscrewGame() {
-    instructionsView->printCredits(winnerName);
     for (Player *player : players) {
         delete player;
     }
-    delete centerPileView;
-    delete burnPileView;
-    delete player1View;
-    delete player2View;
-    delete instructionsView;
+    if (!shouldKillGame) {
+        instructionsView->printCredits(winnerName);
+        delete centerPileView;
+        delete burnPileView;
+        delete player1View;
+        delete player2View;
+        delete instructionsView;
+    }
     Cnsl::closeWindow();
 }
 
 void EgyptianRatscrewGame::play() {
+    if (shouldKillGame) { return; }
     Cnsl::MoveType move = Cnsl::waitForMove(instructionsView->getID());
     while (!isGameDone() && move != Cnsl::QuitGame) {
         bool f_shouldQuit = false;
@@ -47,6 +52,23 @@ void EgyptianRatscrewGame::play() {
         }
         if (f_shouldQuit) { break; }
         move = Cnsl::waitForMove(instructionsView->getID());
+    }
+}
+
+void EgyptianRatscrewGame::checkWindowSize() {
+    if (players.size() != 2) {
+        throw std::runtime_error("Trying to check window size before initlializing players.");
+    }
+    const int minNumCols = std::max(74ul, players[0]->name.size() + players[0]->name.size() + 5);
+    const int minNumLines = 41;
+
+    int numLines = Cnsl::getTotalNLines();
+    int numCols = Cnsl::getTotalNCols();
+    if (numLines < minNumLines || numCols < minNumCols) {
+        shouldKillGame = true;
+        Cnsl::print("Console window is too small to play. Please maximize (or reduce font size) "
+                    "and run again. We'll exit this game now. Press any key to continue.");
+        Cnsl::waitForMove(-1, "", true);
     }
 }
 
