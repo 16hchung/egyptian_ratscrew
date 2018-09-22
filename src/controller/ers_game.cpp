@@ -60,7 +60,7 @@ void EgyptianRatscrewGame::checkWindowSize() {
         throw std::runtime_error("Trying to check window size before initlializing players.");
     }
     const int minNumCols = std::max(74ul, players[0]->name.size() + players[0]->name.size() + 5);
-    const int minNumLines = 41;
+    const int minNumLines = 30;
 
     int numLines = Cnsl::getTotalNLines();
     int numCols = Cnsl::getTotalNCols();
