@@ -45,6 +45,7 @@ ConsoleHandler::MoveType ConsoleHandler::waitForMove(int windowIdx,
 }
 
 void ConsoleHandler::initWindow() {
+    if (f_useNcurses) { return; }
     f_useNcurses = true;
     initscr();
     cbreak();
@@ -109,6 +110,7 @@ void ConsoleHandler::clearWindow(int windowId) {
 }
 
 void ConsoleHandler::closeWindow() {
+    if (!f_useNcurses) { return; }
     const int numWindows = contentWindows.size();
     for (int winIdx = numWindows - 1; winIdx >= 0; winIdx--) {
         delwin(contentWindows[winIdx]);

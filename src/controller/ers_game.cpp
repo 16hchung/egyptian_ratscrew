@@ -59,7 +59,7 @@ void EgyptianRatscrewGame::printIntro() {
     Cnsl::print("Welcome to Egyptian Ratscrew!\n");
     std::string yesOrNo = "";
     while (yesOrNo != yes && yesOrNo != yes_l && yesOrNo != no && yesOrNo != no_l) {
-        yesOrNo = Cnsl::getInput(1, "Want a rundown of how to play?");
+        yesOrNo = Cnsl::getInput(1, "Want a rundown of how to play? (Y/N) ");
         Cnsl::print("\n");
     }
     if (yesOrNo == yes || yesOrNo == yes_l) {

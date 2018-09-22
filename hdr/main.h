@@ -10,4 +10,6 @@ Description: __
 
 int main(int argc, char const *argv[]);
 
+void resizeWarning();
+
 #endif

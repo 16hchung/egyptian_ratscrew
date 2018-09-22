@@ -3,7 +3,20 @@
 
 int main(int argc, char const *argv[])
 {
+    resizeWarning();
     EgyptianRatscrewGame game;
     game.play();
     return 0;
+}
+
+void resizeWarning() {
+    std::cout << std::endl << "***********************************************" << std::endl;
+    std::cout << "Important note: avoid resizing your terminal window, as this can cause unexpected "
+                 "behavior. Type \"ok\" to continue: ";
+    std::string okay;
+    std::cin >> okay;
+    while (okay != "ok") {
+        std::cout << "Type \"ok\" to continue: ";
+        std::cin >> okay;
+    }
 }
