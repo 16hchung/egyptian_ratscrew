@@ -74,7 +74,9 @@ CenterCardPile::SlapType CenterCardPile::currentSlapType() {
         slap = Sandwich;
     } else if (topRank == bottomRank) {
         slap = TopBottom;
-    }    
+    } else if (thirdToTop && cardPairHasRanks(top, thirdToTop, Rank::King, Rank::Queen)) {
+        slap = Divorce;
+    }
     return slap;
 }
 

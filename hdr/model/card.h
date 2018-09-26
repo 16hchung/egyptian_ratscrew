@@ -1,3 +1,9 @@
+/**
+ * card.h
+ * ------
+ * model class to handle single card
+ */
+
 #ifndef CARD_H
 #define CARD_H
 #include "common_hdrs.h"
@@ -29,7 +35,6 @@ public:
 
     // constructor
     Card(Suit suit, Rank rank);
-
 
     // getters
     std::string toString(); // have this here so we can lazy instantiate printable representation

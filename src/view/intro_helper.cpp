@@ -16,20 +16,18 @@ void IntroHelper::goThroughIntro(std::string player1name, std::string player2nam
     printNext = 
     "GAMEPLAY:\n"
     "---------\n"
-    "You each take turns placing down a card (from the top of your hand) onto a \"central pile\". "
+    "You each take turns placing down a card (from the top of your hand) onto a \"central pile\", face up. "
     "For example, " + player1name + " puts down a card, then " + player2name + ","
     " then " + player1name + ", so on and so forth.\n";
     printAndWait(printNext);
 
     printNext = 
+    "*** Face Card Countdown ***\n"
     "You continue alternating until a player places down a face card, which starts a \"countdown\". "
     "The next player then has several chances to put down another face card before the countdown runs out. "
-    "The number of changes depends on the specific rank.\n\n"
-    "The countdown starts at 4 cards an Ace, 3 for a King, 2 for a Queen, 1 for a Jack.\n";
-    printAndWait(printNext);
-
-    printNext =
-    "If the player fails to place down a face card before the countdown runs out, the original player"
+    "The number of chances depends on the specific rank.\n\n"
+    "The countdown starts at 4 cards for an Ace, 3 for a King, 2 for a Queen, 1 for a Jack.\n\n"
+    "If the player fails to place down a face card before the countdown runs out, the original player "
     "(who placed the face card) collects the central pile. This means all cards in the center are "
     "added to the bottom of their hand.\n";
     printAndWait(printNext);
@@ -52,7 +50,8 @@ void IntroHelper::goThroughIntro(std::string player1name, std::string player2nam
     "If the pile is slappable, whoever slaps first collects the central pile. "
     "This applies even in the middle of a face card countdown.\n\n"
     "If the pile is not slappable, any player who slaps must \"burn\" a card, placing down an extra "
-    "card at the bottom of the central pile. In this interface, the central and burn piles are displayed "
+    "card at the bottom of the central pile. Note: this burn card does not become the new bottom for "
+    "top and bottom slaps. In this interface, the central and burn piles are displayed "
     "separately for clarity.\n";
     printAndWait(printNext);
 

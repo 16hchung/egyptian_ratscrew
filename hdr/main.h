@@ -2,7 +2,7 @@
 Egyptian Ratscrew
 
 Author: Heejung Chung
-Description: __
+Description: a console-based two-player card game
  */
 
 #ifndef MAIN_H
@@ -10,6 +10,9 @@ Description: __
 
 int main(int argc, char const *argv[]);
 
+/**
+ * Card game behaves unexpectedly when window is resized, so this function warns the reader of that
+ */
 void resizeWarning();
 
 #endif

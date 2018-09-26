@@ -15,7 +15,6 @@ std::string Card::toString() {
         stringRepresentation = generateStringRepresentation();
     }
     return stringRepresentation;
-    // return suitString()  + ", " + static_cast<char>(rank);
 }
 
 std::string Card::suitString() {

@@ -9,7 +9,7 @@
 using Cnsl = ConsoleHandler;
 
 EgyptianRatscrewGame::EgyptianRatscrewGame() {
-    Cnsl::initWindow();
+    Cnsl::initConsole();
     initPlayers();
     checkWindowSize();
     if (shouldKillGame) { return; }
@@ -30,37 +30,19 @@ EgyptianRatscrewGame::~EgyptianRatscrewGame() {
         delete player2View;
         delete instructionsView;
     }
-    Cnsl::closeWindow();
-}
-
-void EgyptianRatscrewGame::play() {
-    if (shouldKillGame) { return; }
-    Cnsl::MoveType move = Cnsl::waitForMove(instructionsView->getID());
-    while (!isGameDone() && move != Cnsl::QuitGame) {
-        bool f_shouldQuit = false;
-        switch (move) {
-        case Cnsl::Player1Slap: case Cnsl::Player2Slap:
-            playerSlappedCenter((int) move); // enum values represent player index
-            break;
-        case Cnsl::CardDown:
-            cardDown();
-            break;
-        case Cnsl::QuitGame:
-        default:
-            f_shouldQuit = true;
-            break;
-        }
-        if (f_shouldQuit) { break; }
-        move = Cnsl::waitForMove(instructionsView->getID());
-    }
+    Cnsl::closeConsole();
 }
 
 void EgyptianRatscrewGame::checkWindowSize() {
+    // hard-coded constants
+    const int minNumLines = 30;
+    const int standardMinNumCols = 74;
+    // width depends on player names
     if (players.size() != 2) {
         throw std::runtime_error("Trying to check window size before initlializing players.");
     }
-    const int minNumCols = std::max(74ul, players[0]->name.size() + players[0]->name.size() + 5);
-    const int minNumLines = 30;
+    const int minNumCols = std::max(standardMinNumCols,
+                                    (int) (players[0]->name.size() + players[0]->name.size() + 5));
 
     int numLines = Cnsl::getTotalNLines();
     int numCols = Cnsl::getTotalNCols();
@@ -81,7 +63,7 @@ void EgyptianRatscrewGame::printIntro() {
     Cnsl::print("Welcome to Egyptian Ratscrew!\n");
     std::string yesOrNo = "";
     while (yesOrNo != yes && yesOrNo != yes_l && yesOrNo != no && yesOrNo != no_l) {
-        yesOrNo = Cnsl::getInput(1, "Want a rundown of how to play? (Y/N) ");
+        yesOrNo = Cnsl::getInput(1, "Want some instructions on how to play? (Y/N) ");
         Cnsl::print("\n");
     }
     if (yesOrNo == yes || yesOrNo == yes_l) {
@@ -110,6 +92,28 @@ void EgyptianRatscrewGame::initViews() {
     centerPileView   = new MainCenterPileView();
     burnPileView     = new BurnCenterPileView();
     instructionsView = new InstructionsView();
+}
+
+void EgyptianRatscrewGame::play() {
+    if (shouldKillGame) { return; }
+    Cnsl::MoveType move = Cnsl::waitForMove(instructionsView->getID());
+    while (!isGameDone() && move != Cnsl::QuitGame) {
+        bool f_shouldQuit = false;
+        switch (move) {
+        case Cnsl::Player1Slap: case Cnsl::Player2Slap:
+            playerSlappedCenter((int) move); // enum values represent player index
+            break;
+        case Cnsl::CardDown:
+            cardDown();
+            break;
+        case Cnsl::QuitGame:
+        default:
+            f_shouldQuit = true;
+            break;
+        }
+        if (f_shouldQuit) { break; }
+        move = Cnsl::waitForMove(instructionsView->getID());
+    }
 }
 
 bool EgyptianRatscrewGame::playerSlappedCenter(int playerIdx) {
@@ -165,13 +169,16 @@ void EgyptianRatscrewGame::cardDown() {
     if (nextMove != Cnsl::CardDown) {
         shouldLastPlayerGetCenterPile = !playerSlappedCenter((int) nextMove);
     }
-    if (shouldLastPlayerGetCenterPile) {    
+    if (shouldLastPlayerGetCenterPile) {
         Player *lastPlayer = getLastPlayer();
         assert(lastPlayer);
         centerPile.giveCardsToPlayer(lastPlayer);
         centerPileView->clear();
         burnPileView->clear();
+        player1View->update(players[0]->getScore());
+        player2View->update(players[1]->getScore());
         nextPlayerTurn();
+
     }
     instructionsView->printDefault();
 }

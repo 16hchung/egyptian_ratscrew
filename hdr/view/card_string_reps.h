@@ -1,3 +1,9 @@
+/**
+ * card_string_reps.h
+ * ------------------
+ * used to keep all playing card ascii art in separate file 
+ */
+
 #ifndef CARD_STR_REPS_H
 #define CARD_STR_REPS_H
 

@@ -1,7 +1,7 @@
 #include "player_view.h"
 
 PlayerView::PlayerView(ConsoleHandler::WindowPosition position, std::string name, char slapChar, int cardCount)
-                      : ViewBase(position), playerName(name), slapChar(slapChar)
+                      : ViewBase(position), slapChar(slapChar), playerName(name)
 {
     update(cardCount);
 }

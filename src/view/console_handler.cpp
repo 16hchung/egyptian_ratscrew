@@ -1,6 +1,5 @@
 #include "console_handler.h"
 
-
 // Declare static members
 int                                      ConsoleHandler::totalNLines  = -1;
 int                                      ConsoleHandler::totalNCols   = -1;
@@ -9,6 +8,35 @@ std::vector<WINDOW *>                    ConsoleHandler::borderWindows;
 std::vector<WINDOW *>                    ConsoleHandler::contentWindows;
 std::set<ConsoleHandler::WindowPosition> ConsoleHandler::occupiedPositions;
 
+
+/* PUBLIC STATIC METHODS */
+
+void ConsoleHandler::initConsole() {
+    if (f_useNcurses) { return; }
+    f_useNcurses = true;
+    initscr();
+    cbreak();
+    noecho();
+    clear();
+    scrollok(stdscr, TRUE);
+}
+
+void ConsoleHandler::closeConsole() {
+    if (!f_useNcurses) { return; }
+    const int numWindows = contentWindows.size();
+    for (int winIdx = numWindows - 1; winIdx >= 0; winIdx--) {
+        delwin(contentWindows[winIdx]);
+        delwin(borderWindows[winIdx]);
+    }
+    contentWindows.clear();
+    endwin();
+    f_useNcurses = false;
+}
+
+std::string ConsoleHandler::getInput(size_t len, std::string prompt) {
+    print(prompt);
+    return getString(len);
+}
 
 ConsoleHandler::MoveType ConsoleHandler::waitForMove(int windowIdx, 
                                                      std::string incorrectKeyText, 
@@ -44,14 +72,17 @@ ConsoleHandler::MoveType ConsoleHandler::waitForMove(int windowIdx,
     return QuitGame;
 }
 
-void ConsoleHandler::initWindow() {
-    if (f_useNcurses) { return; }
-    f_useNcurses = true;
-    initscr();
-    cbreak();
-    noecho();
-    clear();
-    scrollok(stdscr, TRUE);
+void ConsoleHandler::print(std::string str, int windowIdx) {
+    if (windowIdx >= (int) contentWindows.size()) {
+        throw std::runtime_error("Invalid ID passed to ConsoleHandler::print");
+    }
+    WINDOW *window = (windowIdx < 0) ? stdscr : contentWindows[windowIdx];
+    if (f_useNcurses) {
+        waddstr(window, str.c_str());
+        wrefresh(window);
+    } else {
+        std::cout << str;
+    }
 }
 
 int ConsoleHandler::newWindow(ConsoleHandler::WindowPosition position, std::string windowLabel) {
@@ -109,36 +140,6 @@ void ConsoleHandler::clearWindow(int windowId) {
     }
 }
 
-void ConsoleHandler::closeWindow() {
-    if (!f_useNcurses) { return; }
-    const int numWindows = contentWindows.size();
-    for (int winIdx = numWindows - 1; winIdx >= 0; winIdx--) {
-        delwin(contentWindows[winIdx]);
-        delwin(borderWindows[winIdx]);
-    }
-    contentWindows.clear();
-    endwin();
-    f_useNcurses = false;
-}
-
-void ConsoleHandler::print(std::string str, int windowIdx) {
-    if (windowIdx >= (int) contentWindows.size()) {
-        throw std::runtime_error("Invalid ID passed to ConsoleHandler::print");
-    }
-    WINDOW *window = (windowIdx < 0) ? stdscr : contentWindows[windowIdx];
-    if (f_useNcurses) {
-        waddstr(window, str.c_str());
-        wrefresh(window);
-    } else {
-        std::cout << str;
-    }
-}
-
-std::string ConsoleHandler::getInput(size_t len, std::string prompt) {
-    print(prompt);
-    return getString(len);
-}
-
 int ConsoleHandler::getTotalNLines() {
     if (!f_useNcurses) {
         throw std::runtime_error("Trying to get nlines when ncurses is disabled");
@@ -158,6 +159,9 @@ int ConsoleHandler::getTotalNCols() {
     }
     return totalNCols;
 }
+
+
+/* PRIVATE STATIC METHODS */
 
 void ConsoleHandler::coordsForPosition(ConsoleHandler::WindowPosition position, int &nlines, int &ncols, int &x, int &y) {
     // helpful ratios
