@@ -3,6 +3,7 @@
  * ----------
  * controller class which handles all game play
  */
+
 #ifndef ERS_GAME_H
 #define ERS_GAME_H
 #include "deck.h"
