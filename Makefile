@@ -13,7 +13,6 @@ INCCONTR    := hdr/controller
 INCMODEL    := hdr/model
 INCVIEW     := hdr/view
 BUILDDIR    := obj
-# TARGETDIR   := bin
 SRCEXT      := cpp
 DEPEXT      := d
 OBJEXT      := o
